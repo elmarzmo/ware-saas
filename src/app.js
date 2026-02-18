@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.get("health", (req, res) => {
+app.get("/health", (req, res) => {
     res.json({ status: "ok" });
 });
 
