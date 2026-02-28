@@ -14,7 +14,7 @@ export const protect = async (req, res, next) => {
     const token = header.split(" ")[1];
 
     const decoded = jwt.verify(token, env.jwtSecret);
-    console.log("Decoded:", decoded);
+    //console.log("Decoded:", decoded);
 
     const membership = await Membership.findOne({
       user: decoded.userId,
