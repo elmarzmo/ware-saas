@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Organization } from "../organization/organization.model";
+import { Organization } from "../organization/organization.model.js";
 
 const stockMovementSchema = new mongoose.Schema(
     {

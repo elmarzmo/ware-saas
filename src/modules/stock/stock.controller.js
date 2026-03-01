@@ -17,6 +17,7 @@ export const createStockMovement = async (req, res) => {
         });
         res.status(201).json(updatedProduct);
     } catch (error) {
+       console.log(error);
         res.status(400).json({ message: error.message });
     }
 };
