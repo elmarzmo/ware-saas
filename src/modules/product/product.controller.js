@@ -51,9 +51,22 @@ export const getProductById = async (req, res) => {
 export const updateProduct = async (req, res) => {
     try {
         const { name, sku, quantity } = req.body;
+        const updateFields = {};
+        if (typeof name === "string" && name.trim() !== "")
+             {
+                updateFields.name = name;
+            }
+        if (typeof sku === "string" && sku.trim() !== "") {
+            updateFields.sku = sku;
+        }
+
+        if (typeof quantity === "number" && quantity >= 0) {
+            updateFields.quantity = quantity;
+        }
+        
         const product = await Product.findOneAndUpdate(
             { _id: req.params.id, organization: req.organization._id },
-            { name, sku, quantity },
+            updateFields,
             { new: true, runValidators: true }
         );
         if (!product) {
