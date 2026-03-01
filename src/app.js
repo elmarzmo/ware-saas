@@ -12,6 +12,7 @@ import { login } from './modules/auth/autho.controller.js';
 import testRoutes from './modules/test/test.routes.js';
 
 import productRoutes from './modules/product/product.routes.js';
+import stockRoutes from './modules/stock/stock.routes.js';
 
 const app = express();
 app.use("/api/test", testRoutes);
@@ -28,6 +29,7 @@ app.post("/api/auth/register", register);
 app.post("/api/auth/login", login);
 
 app.use("/api/products", productRoutes);
+app.use("/api/stock", stockRoutes);
 
 app.get("/health", (req, res) => {
     res.json({ status: "ok" });
