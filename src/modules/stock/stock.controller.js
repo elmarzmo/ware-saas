@@ -32,12 +32,15 @@ export const getStockMovements = async (req, res) => {
             query.product = productId;
         }
 
+
+        const pageNumber = Number(page);
+        const limitNumber = Number(limit);
         const movements = await StockMovement.find(query)
             .populate("product", "name")
             .populate("perFormedBy", "name")
             .sort({ createdAt: -1 })
-            .skip((page - 1) * limit)
-            .limit(parseInt(limit));
+            .skip((pageNumber - 1) * limitNumber)
+            .limit(limitNumber);
         const total = await StockMovement.countDocuments(query);
 
         res.json({

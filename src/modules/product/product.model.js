@@ -16,12 +16,18 @@ const productSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+        lowStockThreshold: {
+            type: Number,
+            default: 5,
+            min: 0,
+        },
         organization: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Organization',
             required: true,
-            index: true,
+         
         },
+        
     },
     { timestamps: true }
 );
