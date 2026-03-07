@@ -98,7 +98,9 @@ export const deleteProduct = async (req, res) => {
 
 export const getLowStockProducts = async (req, res) => {
     try {
-        const products = await Product.find({ organization: req.organization._id });
+        const products = await Product.find({ organization: req.organization._id, 
+            $expr: { $lt: ["$quantity", "$lowStockThreshold"] }
+         });
         res.json(products);
     } catch (error) {
         res.status(500).json({ message: "Server error" });

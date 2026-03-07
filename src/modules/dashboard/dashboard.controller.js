@@ -9,12 +9,12 @@ export const getDashboardData = async (req, res) => {
         const totalProducts = await Product.countDocuments({ organization: organizationId });
 
         // Get total stock movements
-        const stockAggregation = await StockMovement.aggregate([
-            { $match: { Organization: organizationId } },
-            { $group: { _id: null, totalQuantity: { $sum: "$quantity" } } },
+        const stockAggregation = await Product.aggregate([
+            { $match: { organization: organizationId } },
+            { $group: { _id: null, totalStock: { $sum: "$quantity" } } },
         ]);
 
-        const totalStockQuantity = stockAggregation.length > 0 ? stockAggregation[0].totalQuantity : 0;
+        const totalStockQuantity = stockAggregation.length > 0 ? stockAggregation[0].totalStock : 0;
         
         const lowStockProducts = await Product.countDocuments({ organization: organizationId, $expr: { $lt: ["$quantity", "$lowStockThreshold"] } });
 
