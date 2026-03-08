@@ -12,7 +12,7 @@ const organizationSchema = new mongoose.Schema(
     {timestamps: true}
 );
 
-export const Organization = mongoose.model(
-    'Organization',
+export const organization = mongoose.model(
+    'organization',
      organizationSchema
     );

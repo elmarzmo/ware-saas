@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { User } from '../user/user.model.js';
 import { Membership } from '../membership/membership.model.js';
-import { Organization } from '../organization/organization.model.js';
+import { organization } from '../organization/organization.model.js';
 import { env } from '../../config/env.js';
 import { logger } from '../../utils/logger.js';
 
@@ -21,13 +21,13 @@ export const register = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: 'User with this email already exists' });
     }
-    const existingOrg = await Organization.findOne({ name: organizationName });
+    const existingOrg = await organization.findOne({ name: organizationName });
     if (existingOrg) {
       return res.status(400).json({ message: 'Organization with this name already exists' });
     }
 
     // Create organization
-    const org = await Organization.create({ name: organizationName });
+    const org = await organization.create({ name: organizationName });
 
     
 

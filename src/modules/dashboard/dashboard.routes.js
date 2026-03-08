@@ -6,6 +6,6 @@ import { authorize } from '../../middleware/authorize.js';
 
 const router = express.Router();
 
-router.get("/stats", protect, authorize("admin", "Manager" ), getDashboardData);
+router.get("/stats", protect, authorize("admin", "manager" ), getDashboardData);
 
 export default router;

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Organization } from "../organization/organization.model.js";
+import { organization } from "../organization/organization.model.js";
 
 const stockMovementSchema = new mongoose.Schema(
     {
@@ -9,9 +9,9 @@ const stockMovementSchema = new mongoose.Schema(
             required: true,
             index: true,
         },
-        Organization: {
+        organization: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Organization',
+            ref: 'organization',
             required: true,
             index: true,
         },
