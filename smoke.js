@@ -6,9 +6,9 @@ async function runSmokeTests() {
     try {
         // Register tenant and user
         const tenant = await axios.post(`${API_URL}/auth/register`, {
-            organizationName: '72Smoke Test Organization',
-            name: '72Smoke Test User',
-            email: '72smoketest@example.com',
+            organizationName: '76Smoke Test Organization',
+            name: '76Smoke Test User',
+            email: '76smoketest@example.com',
             password: 'password123',
         });
         console.log('Tenant registration response:', tenant.data);
@@ -16,7 +16,7 @@ async function runSmokeTests() {
 
         // Login to get token
         const login = await axios.post(`${API_URL}/auth/login`, {
-            email: '72smoketest@example.com',
+            email: '76smoketest@example.com',
             password: 'password123',
             organizationId: tenant.data.organization,
         });
@@ -39,7 +39,7 @@ async function runSmokeTests() {
         console.log('Product creation successful');
 
         // Create a stock movement
-        await axios.post(
+       const stockMovement = await axios.post(
             `${API_URL}/stock`,
             {
                 productId: product.data._id,

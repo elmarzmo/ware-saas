@@ -33,7 +33,7 @@ export const processStockMovement = async ({
         await StockMovement.create(
             [{
                 product: productId,
-                Organization: organizationId,
+                organization: organizationId,
                 type,
                 quantity,
                 perFormedBy: userId,

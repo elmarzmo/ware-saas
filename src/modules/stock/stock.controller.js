@@ -26,7 +26,7 @@ export const createStockMovement = async (req, res) => {
 export const getStockMovements = async (req, res) => {
     try {
         const { page = 1, limit = 10, productId } = req.query;
-        const query = { Organization: req.organization._id };
+        const query = { organization: req.organization._id };
 
         if (productId) {
             query.product = productId;
