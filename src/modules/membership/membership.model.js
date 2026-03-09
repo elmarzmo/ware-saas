@@ -9,7 +9,7 @@ const membershipSchema = new mongoose.Schema(
         },
         organization: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Organization',
+            ref: 'organization',
             required: true,
         },
         role: {
