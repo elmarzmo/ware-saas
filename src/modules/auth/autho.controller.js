@@ -48,6 +48,8 @@ export const register = async (req, res) => {
 
     res.status(201).json({
       message: 'Organization and admin user created successfully',
+      organization: org._id,
+      user: user._id,
     });
 
   } catch (error) {
