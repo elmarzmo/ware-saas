@@ -14,9 +14,16 @@ import testRoutes from './modules/test/test.routes.js';
 import productRoutes from './modules/product/product.routes.js';
 import stockRoutes from './modules/stock/stock.routes.js';
 import dashboardRoutes from './modules/dashboard/dashboard.routes.js';
+
+import { scheduleLowStockCheck } from './jobs/lowStock.queue.js';
+
+
 const app = express();
 app.use("/api/test", testRoutes);
 
+
+// Schedule the low stock check to run every hour
+scheduleLowStockCheck();
 
 // Middleware
 app.use(helmet());

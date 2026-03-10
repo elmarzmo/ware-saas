@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 import { Product } from "../product/product.model.js";
 import { StockMovement } from "./stockMovement.model.js";
 
+
+
+
+
+
+
 export const processStockMovement = async ({
     productId,
     organizationId,
@@ -50,4 +56,5 @@ export const processStockMovement = async ({
         session.endSession();
         throw error;
     }
+   
 };
