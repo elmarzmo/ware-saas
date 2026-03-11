@@ -6,9 +6,9 @@ async function runSmokeTests() {
     try {
         // Register tenant and user
         const tenant = await axios.post(`${API_URL}/auth/register`, {
-            organizationName: '76Smoke Test Organization',
-            name: '76Smoke Test User',
-            email: '76smoketest@example.com',
+            organizationName: '73Smoke Test Organization',
+            name: '73Smoke Test User',
+            email: '73smoketest@example.com',
             password: 'password123',
         });
         console.log('Tenant registration response:', tenant.data);
@@ -16,7 +16,7 @@ async function runSmokeTests() {
 
         // Login to get token
         const login = await axios.post(`${API_URL}/auth/login`, {
-            email: '76smoketest@example.com',
+            email: '73smoketest@example.com',
             password: 'password123',
             organizationId: tenant.data.organization,
         });
@@ -57,6 +57,22 @@ async function runSmokeTests() {
             headers: { Authorization: `Bearer ${token}` },
         });
         console.log('Dashboard data retrieval successful');
+
+        await axios.get(`${API_URL}/analytics/top-moving-products`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log('Top moving products data retrieval successful');
+
+        await axios.get(`${API_URL}/analytics/most-active-users`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log('Most active users data retrieval successful');
+
+        await axios.get(`${API_URL}/analytics/stock-trends`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log('Stock movement trends data retrieval successful');
+
         console.log('Smoke tests completed successfully');
     } catch (error) {
         console.error('Smoke test failed!');
