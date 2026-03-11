@@ -38,7 +38,7 @@ export const mostActiveUsers = async (req, res) => {
         const organizationId = req.organization._id;
         const activeUsers = await StockMovement.aggregate([
             { $match: { organization: organizationId } },
-            { $group: { _id: "$performedBy", totalMovements: { $sum: 1 } } },
+            { $group: { _id: "$perFormedBy", totalMovements: { $sum: 1 } } },
             { $sort: { totalMovements: -1 } },
             { $limit: 5 },
             {
