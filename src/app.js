@@ -17,9 +17,12 @@ import dashboardRoutes from './modules/dashboard/dashboard.routes.js';
 
 import { scheduleLowStockCheck } from './jobs/lowStock.queue.js';
 
+import analyticsRoutes from './modules/analytics/analytics.route.js';
 
 const app = express();
 app.use("/api/test", testRoutes);
+
+app.use("/api/analytics", analyticsRoutes);
 
 
 // Schedule the low stock check to run every hour

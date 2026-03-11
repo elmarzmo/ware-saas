@@ -1,4 +1,4 @@
-import "dot"
+import "dotenv/config";
 import { Worker } from 'bullmq';
 import { redisConnection } from '../config/redis.js';
 import { connectDB } from '../config/db.js';

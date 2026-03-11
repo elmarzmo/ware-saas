@@ -44,6 +44,7 @@ export const getStockMovements = async (req, res) => {
         const total = await StockMovement.countDocuments(query);
 
         res.json({
+            
             total,
             page: Number(page),
             pages: Math.ceil(total / limit),
