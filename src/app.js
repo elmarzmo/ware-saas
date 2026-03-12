@@ -19,8 +19,12 @@ import { scheduleLowStockCheck } from './jobs/lowStock.queue.js';
 
 import analyticsRoutes from './modules/analytics/analytics.route.js';
 
+import { apiLimiter } from './middleware/rateLimiter.js';
+
 const app = express();
 app.use("/api/test", testRoutes);
+
+app.use("/api", apiLimiter); // Apply rate limiter to all API routes
 
 app.use("/api/analytics", analyticsRoutes);
 
