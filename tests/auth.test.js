@@ -1,5 +1,11 @@
 import request from "supertest";
 import app from "../src/app.js";
+import { connectDB } from "../src/config/db.js";
+
+beforeAll(async () => {
+  await connectDB();
+});
+
 
 describe("Auth API", () => {
 
@@ -7,8 +13,9 @@ describe("Auth API", () => {
     const res = await request(app)
       .post("/api/auth/register")
       .send({
-        name: "John Doe",
-        email: "john@test.com",
+        organizationName: "TestOrg45",
+        name: "John Doe45",
+        email: "john45@test.com",
         password: "password123"
       });
 
