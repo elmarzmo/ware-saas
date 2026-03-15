@@ -1,10 +1,23 @@
 import  request  from "supertest";
 import app from "../src/app.js";
 import { connectDB } from "../src/config/db.js";
+import mongoose from "mongoose";
 
+const unique = Date.now();
 beforeAll(async () => {
   await connectDB();
 });
+
+beforeAll(async () => {
+  // Clear the database before running tests
+  const collection = mongoose.connection.collections;
+  for (let key in collection) {
+    await collection[key].deleteMany({});
+  }
+});
+
+
+
 
 
 describe("Stock API", () => {
@@ -17,16 +30,16 @@ describe("Stock API", () => {
     const registerRes = await request(app)
       .post("/api/auth/register")
       .send({
-        organizationName: "TestOrg44",
-        name: "Stock Doe44",
-        email: "stock44@test.com",
+        organizationName: "TestOrg" + unique,
+        name: "Test User",
+        email: `test${unique}@test.com`,
         password: "password123"
       });
 
     const loginRes = await request(app)
       .post("/api/auth/login")
       .send({
-        email: "stock44@test.com",
+        email: `test${unique}@test.com`,
         password: "password123",
         organizationId: registerRes.body.organization
       });
@@ -38,10 +51,11 @@ describe("Stock API", () => {
       .post("/api/products")
       .set("Authorization", `Bearer ${token}`)
       .send({
-        name: "Test Product44",
-        sku: "TEST-00144",
+        name: "Test Product",
+        sku: "TEST SKU",
         quantity: 100
       });
+  //  expect(productRes.statusCode).toBe(201);
     productId = productRes.body._id;
 
   });
@@ -60,4 +74,9 @@ describe("Stock API", () => {
 
 });
 
+});
+
+
+afterAll(async () => {
+  await mongoose.connection.close();
 });
