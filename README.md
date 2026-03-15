@@ -15,3 +15,6 @@ Production-style backend with modular structure, centrelaized error handling, an
 ## Status
 In development 
 
+## Test
+Tests cover authentication, multi-tenant isolation, product management, and atomic stock operations using Jest and Supertest.
+
