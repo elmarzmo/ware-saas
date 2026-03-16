@@ -3,19 +3,9 @@ import app from "../src/app.js";
 import { connectDB } from "../src/config/db.js";
 import mongoose from "mongoose";
 
-const unique = Date.now();
+request(app);
 
-beforeAll(async () => {
-  await connectDB();
- 
-});
-beforeAll (async () => {
-  // Clear the database before each test
- const collection = mongoose.connection.collections;
-  for (let key in collection) {
-    await collection[key].deleteMany({});
-  }
-});
+const unique = Math.random().toString(36).substring(2, 15);
 
 
 
@@ -39,8 +29,4 @@ describe("Auth API", () => {
 
 
 
-});
-
-afterAll(async () => {
-  await mongoose.connection.close();
 });

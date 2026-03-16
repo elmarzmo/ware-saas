@@ -6,9 +6,16 @@ import { env } from './config/env.js';
 const start = async () => {
     await connectDB();
 
+    if (env.nodeEnv !== 'test') {
+        const { scheduleLowStockCheck } = await import('./jobs/lowStock.queue.js');
+        await scheduleLowStockCheck();
+    }
+
     app.listen(env.port, () => {
         logger.info(`Server running in ${env.nodeEnv} mode on port ${env.port}`);
     });
 };
-
-start();
+if (env.nodeEnv !== 'test') {
+    start();
+}
+export default app;

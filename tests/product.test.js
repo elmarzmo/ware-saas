@@ -3,18 +3,10 @@ import app from "../src/app.js";
 import { connectDB } from "../src/config/db.js";
 import mongoose from "mongoose";
 
-const unique = Date.now();
-beforeAll(async () => {
-  await connectDB();
-});
+request(app);
 
-beforeAll(async () => {
-  // Clear the database before running tests
-  const collection = mongoose.connection.collections;
-  for (let key in collection) {
-    await collection[key].deleteMany({});
-  }
-});
+const unique = Math.random().toString(36).substring(2, 15);
+
 
 
 
@@ -61,9 +53,4 @@ describe("Product API", () => {
 
   });
 
-});
-
-afterAll(async () => {
-  
-  await mongoose.connection.close();
 });

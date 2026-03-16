@@ -15,8 +15,6 @@ import productRoutes from './modules/product/product.routes.js';
 import stockRoutes from './modules/stock/stock.routes.js';
 import dashboardRoutes from './modules/dashboard/dashboard.routes.js';
 
-import { scheduleLowStockCheck } from './jobs/lowStock.queue.js';
-
 import analyticsRoutes from './modules/analytics/analytics.route.js';
 
 import { apiLimiter } from './middleware/rateLimiter.js';
@@ -27,10 +25,6 @@ app.use("/api/test", testRoutes);
 app.use("/api", apiLimiter); // Apply rate limiter to all API routes
 
 app.use("/api/analytics", analyticsRoutes);
-
-
-// Schedule the low stock check to run every hour
-scheduleLowStockCheck();
 
 // Middleware
 app.use(helmet());
