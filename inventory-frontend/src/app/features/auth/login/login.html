@@ -1,9 +1,10 @@
 <div class=" login-container">
     <h2> Inventory Saas Login</h2>
-    <form>
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
+    <form (ngSubmit)="onLogin()">
+        <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required/>
+        <input type="password" placeholder="Password" [(ngModel)]="password" name="password" required/>
+        <input type="text" placeholder="Organization ID" [(ngModel)]="organizationId" name="organizationId" required/>
         <button type="submit">Login</button>
 
     </form>
-</div>>
+</div>
