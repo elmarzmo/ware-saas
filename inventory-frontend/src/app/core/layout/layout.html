@@ -1,1 +1,23 @@
-<p>layout works!</p>
+<div class="app-container">
+    <aside class="sidebar">
+        <h2>Inventory Saas</h2>
+
+        <nav>
+            <a routerLink="/dashboard" >Dashboard</a>
+            <a routerLink="/products" >Products</a>
+            <a routerLink="/stock" >Stock</a>
+            <a routerLink="/analytics" >Analytics</a>
+        </nav>
+    </aside>
+
+    <div class="main">
+
+        <header class="navbar">
+            <button (click)="logout()">Logout</button>
+        </header>
+
+        <main class="content">
+        <router-outlet></router-outlet>
+        </main>
+
+</div>
