@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../emvironments/environment';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
+
 
 
 @Injectable({
