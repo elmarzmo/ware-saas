@@ -23,10 +23,16 @@ export class Auth {
 
     );
   }
-
+ 
   getToken() {
     return localStorage.getItem('token');
   }
+   getAuthHeaders() {
+    return {
+      Authorization: `Bearer ${this.getToken()}`
+    };
+  }
+  
   logout() {
     localStorage.removeItem('token');
   }
