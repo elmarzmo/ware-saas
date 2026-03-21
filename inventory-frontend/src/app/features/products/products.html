@@ -7,19 +7,29 @@
 </div>
 
 <table>
-    <tr>
-        <th>Name</th>
-        <th>SKU</th>
-        <th>Quantity</th>
-        <th>Actions</th>
-    </tr>
-    <tr *ngFor="let product of products">
-        <td>{{ product.name }}</td>
-        <td>{{ product.sku }}</td>
-        <td>{{ product.quantity }}</td>
-        <td>
-            <button (click)="updateProduct(product.id, product)">Update Product</button>
-            <button (click)="deleteProduct(product.id)">Delete</button>
-        </td>
-    </tr>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>SKU</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (product of products; track product.sku) {
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.sku }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>
+                <button (click)="updateProduct(product.id, product)">Update</button>
+                <button (click)="deleteProduct(product.id)">Delete</button>
+            </td>
+        </tr>
+        } @empty {
+        <tr>
+            <td colspan="4">No products found.</td>
+        </tr>
+        }
+    </tbody>
 </table>

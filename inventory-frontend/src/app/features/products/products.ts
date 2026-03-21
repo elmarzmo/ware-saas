@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../core/services/product';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-products',
-  imports: [  ],
+  standalone: true,
+  imports: [ FormsModule, CommonModule ],
   templateUrl: './products.html',
   styleUrl: './products.scss',
 })
@@ -61,7 +64,7 @@ export class Products implements OnInit {
         console.log(res);
       });
     }
-    
+
 
 
 }
