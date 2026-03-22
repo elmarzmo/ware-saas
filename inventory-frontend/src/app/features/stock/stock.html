@@ -1,1 +1,41 @@
-<p>stock works!</p>
+<h1>Stock Management</h1>
+
+<div class="form">
+
+  <select [(ngModel)]="newMovement.productId">
+    <option value="">Select Product</option>
+    <option *ngFor="let p of products" [value]="p._id">
+      {{ p.name }}
+    </option>
+  </select>
+
+  <select [(ngModel)]="newMovement.type">
+    <option value="IN">IN</option>
+    <option value="OUT">OUT</option>
+  </select>
+
+  <input type="number" [(ngModel)]="newMovement.quantity" min="1">
+
+  <button (click)="addMovement()">Submit</button>
+
+</div>
+
+
+
+<h2>Movement History</h2>
+
+<table>
+  <tr>
+    <th>Product</th>
+    <th>Type</th>
+    <th>Quantity</th>
+    <th>Date</th>
+  </tr>
+
+  <tr *ngFor="let m of movements">
+    <td>{{ m.product?.name || m.productId }}</td>
+    <td>{{ m.type }}</td>
+    <td>{{ m.quantity }}</td>
+    <td>{{ m.timestamp | date }}</td>
+  </tr>
+</table>
