@@ -16,36 +16,36 @@
         </tr>
     </thead>
     <tbody>
-        @for (product of products; track product.sku) {
+        @for (product of products; track product._id) {
         <tr>
             <td>
-                @if (updateProductId === product.id) {
+                @if (updateProductId === product._id) {
                     <input [(ngModel)]="product.name" name="updateName"/>
                 } @else {
                     {{ product.name }}
                 }
             </td>
             <td>
-                @if (updateProductId === product.id) {
+                @if (updateProductId === product._id) {
                     <input [(ngModel)]="product.sku" name="updateSku"/>
                 } @else {
                     {{ product.sku }}
                 }
             </td>
             <td>
-                @if (updateProductId === product.id) {
+                @if (updateProductId === product._id) {
                     <input type="number" [(ngModel)]="product.quantity" name="updateQuantity"/>
                 } @else {
                     {{ product.quantity }}
                 }
             </td>
             <td>
-                @if (updateProductId === product.id) {
-                    <button (click)="saveUpdate(product._id, product)">Save</button>
+                @if (updateProductId === product._id) {
+                    <button (click)="saveUpdate(product)">Save</button>
                     <button (click)="cancelUpdate()">Cancel</button>
                 } @else {
-                    <button (click)="startUpdate(product.id)">Edit</button>
-                    <button (click)="deleteProduct(product.id)">Delete</button>
+                    <button (click)="startUpdate(product)">Edit</button>
+                    <button (click)="deleteProduct(product._id)">Delete</button>
                 }
         </tr>
         }

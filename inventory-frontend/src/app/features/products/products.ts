@@ -20,7 +20,10 @@ export class Products implements OnInit {
     quantity: 0,
   };
 
-  constructor(private productService: Product) { }
+  editSnapshot: { name: string; sku: string; quantity: number } | null = null;
+  updateProductId: string | null = null;
+
+  constructor(private productService: Product) {}
 
   ngOnInit() {
     this.loadProducts();
@@ -63,20 +66,38 @@ export class Products implements OnInit {
       });
     }
 
-    updateProductId: string | null = null;
+    
 
-    startUpdate(id: string) {
-      this.updateProductId = id;
+    startUpdate(product: any) {
+      this.updateProductId = product._id;
+      this.editSnapshot = { name: product.name, sku: product.sku, quantity: product.quantity };
     }
     cancelUpdate() {
+      if (this.editSnapshot && this.updateProductId) {
+        const product = this.products.find(p => p._id === this.updateProductId);
+        if (product) {
+          product.name = this.editSnapshot.name;
+          product.sku = this.editSnapshot.sku;
+          product.quantity = this.editSnapshot.quantity;
+        }
+      }
       this.updateProductId = null;
-      this.loadProducts();
+      this.editSnapshot = null;
     }
-    saveUpdate(id: string, data: any) {
-      this.productService.updateProduct(id, data).subscribe(() => {
+
+    saveUpdate(product: any) {
+      const payload = {
+        name: product.name,
+        sku: product.sku,
+        quantity : product.quantity,
+      };
+      this.productService.updateProduct(product._id, payload).subscribe(() => {
         this.updateProductId = null;
+        this.editSnapshot = null;
         this.loadProducts();
       });
+     
+     
     }
 
     
