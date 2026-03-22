@@ -29,6 +29,7 @@ export class Products implements OnInit {
   loadProducts() {
     this.productService.getProducts().subscribe((res: any) => {
       this.products = res;
+    
     });
   }
 
@@ -53,17 +54,33 @@ export class Products implements OnInit {
       });
     }
 
-    updateProduct(id: string, data: any) {
-      this.productService.updateProduct(id, data).subscribe(() => {
-        this.loadProducts();
-      });
-    }
+    
+    
 
     getProductById(id: string) {
       this.productService.getProductById(id).subscribe((res: any) => {
         console.log(res);
       });
     }
+
+    updateProductId: string | null = null;
+
+    startUpdate(id: string) {
+      this.updateProductId = id;
+    }
+    cancelUpdate() {
+      this.updateProductId = null;
+      this.loadProducts();
+    }
+    saveUpdate(id: string, data: any) {
+      this.productService.updateProduct(id, data).subscribe(() => {
+        this.updateProductId = null;
+        this.loadProducts();
+      });
+    }
+
+    
+    
 
 
 

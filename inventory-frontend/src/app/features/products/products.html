@@ -18,17 +18,35 @@
     <tbody>
         @for (product of products; track product.sku) {
         <tr>
-            <td>{{ product.name }}</td>
-            <td>{{ product.sku }}</td>
-            <td>{{ product.quantity }}</td>
             <td>
-                <button (click)="updateProduct(product.id, product)">Update</button>
-                <button (click)="deleteProduct(product.id)">Delete</button>
+                @if (updateProductId === product.id) {
+                    <input [(ngModel)]="product.name" name="updateName"/>
+                } @else {
+                    {{ product.name }}
+                }
             </td>
-        </tr>
-        } @empty {
-        <tr>
-            <td colspan="4">No products found.</td>
+            <td>
+                @if (updateProductId === product.id) {
+                    <input [(ngModel)]="product.sku" name="updateSku"/>
+                } @else {
+                    {{ product.sku }}
+                }
+            </td>
+            <td>
+                @if (updateProductId === product.id) {
+                    <input type="number" [(ngModel)]="product.quantity" name="updateQuantity"/>
+                } @else {
+                    {{ product.quantity }}
+                }
+            </td>
+            <td>
+                @if (updateProductId === product.id) {
+                    <button (click)="saveUpdate(product._id, product)">Save</button>
+                    <button (click)="cancelUpdate()">Cancel</button>
+                } @else {
+                    <button (click)="startUpdate(product.id)">Edit</button>
+                    <button (click)="deleteProduct(product.id)">Delete</button>
+                }
         </tr>
         }
     </tbody>
