@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { StockService } from '../../core/services/stockService';
 import { Product } from '../../core/services/product';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-stock',
-  imports: [],
+  imports: [FormsModule, CommonModule],
   templateUrl: './stock.html',
   styleUrl: './stock.scss',
 })
