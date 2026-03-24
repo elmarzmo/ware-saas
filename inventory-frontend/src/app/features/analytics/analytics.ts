@@ -7,7 +7,7 @@ import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-analytics',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, BaseChartDirective],
   templateUrl: './analytics.html',
   styleUrl: './analytics.scss',
 })
