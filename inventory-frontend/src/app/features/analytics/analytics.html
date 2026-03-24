@@ -1,1 +1,26 @@
-<p>analytics works!</p>
+<h1>Analytics Dashboard</h1>
+
+<div style="width: 600px;">
+    <h2>Top Moving Products</h2>
+    <canvas baseChart
+            [data]="topProductsChart?.data"
+            chattype="bar">
+    </canvas>
+
+</div>
+
+<div style="width: 600px; margin-top: 40px;">
+    <h2>Most Active Users</h2>
+    <canvas baseChart
+            [data]="activeUsersChart?.data"
+            chattype="bar">
+    </canvas>
+</div>
+
+<div style="width: 600px; margin-top: 40px;">
+    <h2>Stock Trends</h2>
+    <canvas baseChart
+            [data]="stockTrendsChart?.data"
+            chattype="line">
+    </canvas>
+</div>
