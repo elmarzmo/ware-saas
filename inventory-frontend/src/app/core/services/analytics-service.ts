@@ -19,7 +19,7 @@ export class AnalyticsService {
   }
 
   activeUsers() {
-    return this.http.get(`${this.apiUrl}/analytics/active-users`, {
+    return this.http.get(`${this.apiUrl}/analytics/most-active-users`, {
       headers: this.auth.getAuthHeaders(),
     });
   }
