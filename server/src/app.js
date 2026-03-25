@@ -20,11 +20,7 @@ import analyticsRoutes from './modules/analytics/analytics.route.js';
 import { apiLimiter } from './middleware/rateLimiter.js';
 
 const app = express();
-app.use("/api/test", testRoutes);
 
-app.use("/api", apiLimiter); // Apply rate limiter to all API routes
-
-app.use("/api/analytics", analyticsRoutes);
 
 // Middleware
 app.use(helmet());
@@ -33,6 +29,13 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // Routes
+
+app.use("/api/test", testRoutes);
+
+app.use("/api", apiLimiter); // Apply rate limiter to all API routes
+
+app.use("/api/analytics", analyticsRoutes);
+
 app.post("/api/auth/register", register);
 app.post("/api/auth/login", login);
 
