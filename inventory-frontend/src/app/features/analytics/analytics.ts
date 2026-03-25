@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {  ChartConfiguration } from 'chart.js/auto';
 import { BaseChartDirective } from 'ng2-charts';
+import { Chart, registerables } from 'chart.js/auto';
+
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-analytics',
