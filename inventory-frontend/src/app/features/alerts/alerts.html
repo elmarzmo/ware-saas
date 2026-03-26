@@ -1,1 +1,23 @@
-<p>alerts works!</p>
+<h1>Low Stock Alerts</h1>
+
+<div *ngIf = "lowStockProducts.length === 0">
+    <p>No low stock alerts at the moment.</p>
+</div>
+
+<table *ngIf = "lowStockProducts.length > 0" class="alerts-table">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>SKU</th>
+            <th>Quantity</th>
+            <th>Low Stock Threshold</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let product of lowStockProducts">
+            <td>{{ product.name }}</td>
+            <td>{{ product.sku }}</td>
+            <td style="color: red;">{{ product.quantity }}</td>
+            <td> {{product.lowStockThreshold}}</td>
+        </tr>
+    </tbody>
