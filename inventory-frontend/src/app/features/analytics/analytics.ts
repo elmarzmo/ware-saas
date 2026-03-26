@@ -8,6 +8,7 @@ import { Chart, registerables } from 'chart.js/auto';
 
 Chart.register(...registerables);
 
+
 @Component({
   selector: 'app-analytics',
   imports: [FormsModule, CommonModule, BaseChartDirective],
@@ -15,9 +16,9 @@ Chart.register(...registerables);
   styleUrl: './analytics.scss',
 })
 export class Analytics implements OnInit {
-
+ 
   topProductsChart!: ChartConfiguration<'bar'>;
-  activeUsersChart!: ChartConfiguration<'bar'>;
+  activeUsersChart!: ChartConfiguration<'line'>;
   stockTrendsChart!: ChartConfiguration<'line'>;
 
   constructor(private analyticsService: AnalyticsService) {}
@@ -34,11 +35,11 @@ export class Analytics implements OnInit {
         type: 'bar',
          data: {
          
-          labels: res.map((item: any) => item.productName),
+          labels: res.map((item: any) => item.name),
           datasets: [
             {
               label: 'Total Moved',
-              data: res.map((item: any) => item.totalMoved),
+              data: res.map((item: any) => item.totalProductsMoved),
             }]
         }
       };
@@ -48,13 +49,13 @@ export class Analytics implements OnInit {
   loadActiveUsers() {
     this.analyticsService.activeUsers().subscribe((res: any) => {
       this.activeUsersChart = {
-        type: 'bar',
+        type: 'line',
         data: {
-          labels: res.map((item: any) => item.username),
+          labels: res.map((item: any) => item.name),
           datasets: [
             {
               label: 'Active Sessions',
-              data: res.map((item: any) => item.activeSessions),
+              data: res.map((item: any) => item.totalMovements),
             }]
         }   
 
@@ -69,11 +70,11 @@ export class Analytics implements OnInit {
         type: 'line',
         data: {
          
-          labels: res.map((item: any) => item.date),
+          labels: res.map((item: any) => `${item.year}-${String(item.month).padStart(2, '0')}`),
           datasets: [
             {
               label: 'Stock Level',
-              data: res.map((item: any) => item.stockLevel),
+              data: res.map((item: any) => item.totalMoved),
             }]
         }
       };
