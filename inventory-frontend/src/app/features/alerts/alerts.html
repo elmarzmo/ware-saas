@@ -17,7 +17,8 @@
         <tr *ngFor="let product of lowStockProducts">
             <td>{{ product.name }}</td>
             <td>{{ product.sku }}</td>
-            <td style="color: red;">{{ product.quantity }}</td>
+            <td>{{ product.quantity }}</td>
             <td> {{product.lowStockThreshold}}</td>
         </tr>
     </tbody>
+</table>
