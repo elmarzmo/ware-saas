@@ -1,0 +1,37 @@
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #83a0ff;
+}
+table, th, td {
+    border: 1px solid black;
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #45a049;
+}
+thead {
+    background-color: #f2f2f2;
+}
+.form {
+    margin-top: 20px;
+}
+
+
