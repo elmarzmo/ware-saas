@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../core/services/userServive';
 
 @Component({
   selector: 'app-users',
@@ -6,6 +7,60 @@ import { Component } from '@angular/core';
   templateUrl: './users.html',
   styleUrl: './users.scss',
 })
-export class Users {
+export class Users implements OnInit {
+
+  Users: any[] = [];
+
+  newUser: any = {
+    username: '',
+    email: '',
+    role: 'staff',
+    password: '',
+  };
+
+  constructor(private userService: UserService) {}
+
+  ngOnInit(): void {
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    this.userService.getUsers().subscribe((users) => {
+
+      // Handle the list of users
+      this.Users = users as any[];
+
+    });
+
+  }
+
+  createUser() {
+    this.userService.createUser(this.newUser).subscribe(() => {
+      this.loadUsers();
+      this.newUser = {
+        username: '',
+        email: '',
+        role: 'staff',
+        password: '',
+      };
+    });
+
+  }
+
+  updateUser(user: any) {
+    this.userService.updateUser(user._id, user).subscribe(() => {
+      this.loadUsers();
+    });
+  }
+
+  deleteUser(id: string) {
+    this.userService.deleteUser(id).subscribe(() => {
+      this.loadUsers();
+    });
+
+
+  }
+
+  
 
 }

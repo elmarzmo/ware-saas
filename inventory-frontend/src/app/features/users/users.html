@@ -1,1 +1,31 @@
-<p>users works!</p>
+<h1>User Management</h1>
+
+<div class="form">
+  <input placeholder="Name" [(ngModel)]="newUser.name">
+  <input placeholder="Email" [(ngModel)]="newUser.email">
+  <input type="password" placeholder="Password" [(ngModel)]="newUser.password">
+
+  <select [(ngModel)]="newUser.role">
+    <option value="admin">Admin</option>
+    <option value="manager">Manager</option>
+    <option value="employee">Employee</option>
+  </select>
+
+  <button (click)="addUser()">Add User</button>
+</div>
+
+---
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Role</th>
+  </tr>
+
+  <tr *ngFor="let u of users">
+    <td>{{ u.name }}</td>
+    <td>{{ u.email }}</td>
+    <td>{{ u.role || 'employee' }}</td>
+  </tr>
+</table>
