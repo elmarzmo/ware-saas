@@ -42,7 +42,7 @@ export class Users implements OnInit {
       this.newUser = {
         username: '',
         email: '',
-        role: 'staff',
+        role: 'employee',
         password: '',
       };
     });

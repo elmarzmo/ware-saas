@@ -18,7 +18,7 @@ export class UserService {
 
   createUser(user: any) {
     const headers = this.auth.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/users`, user, { headers });
+    return this.http.post(`${this.apiUrl}/users/createUser`, user, { headers });
   }
 
   updateUser(id: string, user: any) {
