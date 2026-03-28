@@ -7,6 +7,7 @@ import { Products } from './features/products/products';
 import { Stock } from './features/stock/stock';
 import { Analytics } from './features/analytics/analytics';
 import { Alerts } from './features/alerts/alerts';
+import { Users } from './features/users/users';
 
 export const routes: Routes = [
     { path: 'login', component: Login },
@@ -16,6 +17,7 @@ export const routes: Routes = [
         { path: 'stock', component: Stock },
         { path: 'analytics', component: Analytics },
         { path: 'alerts', component: Alerts },
+        { path: 'users', component: Users },
 
     ]},
     { path : '', redirectTo: 'login', pathMatch: 'full' },
