@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/services/userServive';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
-  imports: [],
+  imports: [ CommonModule, FormsModule ],
   templateUrl: './users.html',
   styleUrl: './users.scss',
 })
@@ -61,6 +63,6 @@ export class Users implements OnInit {
 
   }
 
-  
+
 
 }

@@ -11,19 +11,19 @@
     <option value="employee">Employee</option>
   </select>
 
-  <button (click)="addUser()">Add User</button>
+  <button (click)="createUser()">Add User</button>
 </div>
 
----
 
-<table>
+
+<table class="user-list">
   <tr>
     <th>Name</th>
     <th>Email</th>
     <th>Role</th>
   </tr>
 
-  <tr *ngFor="let u of users">
+  <tr *ngFor="let u of Users">
     <td>{{ u.name }}</td>
     <td>{{ u.email }}</td>
     <td>{{ u.role || 'employee' }}</td>
