@@ -50,3 +50,23 @@ export const deleteUser = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+export const createUser = async (req, res) => {
+    try {
+        const { name, email, password, role } = req.body;
+        const existingUser = await User.findOne({ email, organization: req.organization._id });
+        if (existingUser) {
+            return res.status(400).json({ message: "Email already in use" });
+        }
+        const user = new User({
+            name,
+            email,
+            password,
+            role,
+            organization: req.organization._id,
+        });
+        await user.save();
+        res.status(201).json({ message: "User created successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};  
