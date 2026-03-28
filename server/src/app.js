@@ -16,6 +16,7 @@ import stockRoutes from './modules/stock/stock.routes.js';
 import dashboardRoutes from './modules/dashboard/dashboard.routes.js';
 
 import analyticsRoutes from './modules/analytics/analytics.route.js';
+import userRoutes from './modules/user/user.routes.js';
 
 import { apiLimiter } from './middleware/rateLimiter.js';
 
@@ -42,7 +43,7 @@ app.post("/api/auth/login", login);
 app.use("/api/products", productRoutes);
 app.use("/api/stock", stockRoutes);
 app.use("/api/dashboard", dashboardRoutes);
-
+app.use("/api/users", userRoutes);
 app.get("/health", (req, res) => {
     res.json({ status: "ok" });
 });
