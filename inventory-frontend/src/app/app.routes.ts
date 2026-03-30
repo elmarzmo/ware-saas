@@ -8,6 +8,7 @@ import { Stock } from './features/stock/stock';
 import { Analytics } from './features/analytics/analytics';
 import { Alerts } from './features/alerts/alerts';
 import { Users } from './features/users/users';
+import { roleGuard } from './core/guards/role-guard';
 
 export const routes: Routes = [
     { path: 'login', component: Login },
@@ -20,5 +21,6 @@ export const routes: Routes = [
         { path: 'users', component: Users },
 
     ]},
+    { path: 'users', component: Users, canActivate: [authGuard, roleGuard], data: { role: 'admin' } },
     { path : '', redirectTo: 'login', pathMatch: 'full' },
 ];
