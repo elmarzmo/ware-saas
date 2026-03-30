@@ -14,9 +14,9 @@ export class Users implements OnInit {
   Users: any[] = [];
 
   newUser: any = {
-    username: '',
+    name: '',
     email: '',
-    role: 'staff',
+    role: 'employee',
     password: '',
   };
 
@@ -40,7 +40,7 @@ export class Users implements OnInit {
     this.userService.createUser(this.newUser).subscribe(() => {
       this.loadUsers();
       this.newUser = {
-        username: '',
+        name: '',
         email: '',
         role: 'employee',
         password: '',
