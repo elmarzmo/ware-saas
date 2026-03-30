@@ -32,6 +32,14 @@ export class Auth {
       Authorization: `Bearer ${this.getToken()}`
     };
   }
+
+  getUserRole() {
+    const token = this.getToken();
+    if (!token) return null;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.role;
+  }
+  
   
   logout() {
     localStorage.removeItem('token');
