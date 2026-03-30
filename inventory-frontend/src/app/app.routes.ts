@@ -18,9 +18,8 @@ export const routes: Routes = [
         { path: 'stock', component: Stock },
         { path: 'analytics', component: Analytics },
         { path: 'alerts', component: Alerts },
-        { path: 'users', component: Users },
+        { path: 'users', component: Users, canActivate: [roleGuard], data: { role: ['admin', 'manager'] } },
 
     ]},
-    { path: 'users', component: Users, canActivate: [authGuard, roleGuard], data: { role: 'admin' } },
     { path : '', redirectTo: 'login', pathMatch: 'full' },
 ];
