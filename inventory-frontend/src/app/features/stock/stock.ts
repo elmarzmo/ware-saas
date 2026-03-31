@@ -15,6 +15,9 @@ export class Stock implements OnInit {
 
   products: any[] = [];
   movements: any[] = [];
+  totalMovements = 0;
+  currentPage = 1;
+  totalPages = 0;
 
   newMovement = {
     productId: '',
@@ -33,14 +36,20 @@ export class Stock implements OnInit {
   }
 
   loadProducts() {
+
     this.productService.getProducts().subscribe((res: any) => {
+      
       this.products = res;
     });
   }
 
   loadMovements() {
     this.stockService.getMovements().subscribe((res: any) => {
-      this.movements = res;
+      
+      this.movements = res.data;
+      this.totalMovements = res.total;
+      this.currentPage = res.page;
+      this.totalPages = res.pages;
     });
   }
 
