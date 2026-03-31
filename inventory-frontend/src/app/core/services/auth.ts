@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 
 
@@ -10,6 +11,8 @@ import { tap } from 'rxjs';
 })
 export class Auth {
   private api = environment.apiUrl;
+  private userRoleSubject = new BehaviorSubject<string | null>(localStorage.getItem('role'));
+  userRole$ = this.userRoleSubject.asObservable();  
 
   constructor(private http: HttpClient) {}
 
@@ -18,6 +21,9 @@ export class Auth {
     .pipe(
       tap((res: any) => {
         localStorage.setItem('token', res.token);
+        localStorage.setItem('role', res.role);
+
+        this.userRoleSubject.next(res.role);
       })
 
 
@@ -33,15 +39,12 @@ export class Auth {
     };
   }
 
-  getUserRole() {
-    const token = this.getToken();
-    if (!token) return null;
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.role;
-  }
-  
+ 
+
   
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    this.userRoleSubject.next(null);
   }
 }

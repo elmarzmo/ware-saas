@@ -59,6 +59,7 @@ export const updateUser = async (req, res) => {
 
         if (role) {
             membership.role = role;
+            membership.user.role = role;
         }
 
         await membership.user.save();
@@ -96,6 +97,7 @@ export const deleteUser = async (req, res) => {
 export const createUser = async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
+        const normalizedRole = ["admin", "manager", "employee"].includes(role) ? role : "employee";
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -122,6 +124,7 @@ export const createUser = async (req, res) => {
         const user = new User({
             name,
             email,
+            role: normalizedRole,
             password: hashedPassword,
         });
         await user.save();
@@ -129,7 +132,7 @@ export const createUser = async (req, res) => {
         await Membership.create({
             user: user._id,
             organization: req.organization._id,
-            role: role || "employee",
+            role: normalizedRole,
         });
 
         res.status(201).json({ message: "User created successfully" });

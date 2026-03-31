@@ -113,7 +113,9 @@ export const login = async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.json({ token });
+    res.json({token: token,
+      role: membership.role,
+     });
 
   } catch (error) {
     logger.error(error);
