@@ -6,7 +6,7 @@ import { getUsers, getUserById, updateUser, deleteUser, createUser } from './use
 
 const router = express.Router();
 
-router.get("/", protect, authorize("admin"), getUsers);
+router.get("/", protect, authorize("admin", "manager"), getUsers);
 router.get("/:id", protect, authorize("admin"), getUserById);
 router.put("/:id", protect, authorize("admin"), updateUser);
 router.delete("/:id", protect, authorize("admin"), deleteUser);
