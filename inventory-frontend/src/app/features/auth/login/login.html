@@ -1,10 +1,23 @@
 <div class=" login-container">
     <h2> Inventory Saas Login</h2>
-    <form (ngSubmit)="onLogin()">
-        <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required/>
-        <input type="password" placeholder="Password" [(ngModel)]="password" name="password" required/>
-        <input type="text" placeholder="Organization ID" [(ngModel)]="organizationId" name="organizationId" required/>
-        <button type="submit">Login</button>
 
+    <div *ngIf="serverError" class="error-banner">{{ serverError }}</div>
+
+    <form (ngSubmit)="onLogin()" novalidate>
+        <div class="field">
+
+            <input type="email" placeholder="Email" [(ngModel)]="email" name="email" [class.input-error]="errors['email']" autocomplete="email"/>
+            <span class="error-msg" *ngIf="errors['email']">{{ errors['email'] }}</span>
+        </div>
+        <div class="field">
+            <input type="password" placeholder="Password" [(ngModel)]="password" name="password" [class.input-error]="errors['password']" autocomplete="current-password"/>
+            <span class="error-msg" *ngIf="errors['password']">{{ errors['password'] }}</span>
+        </div>
+        <div class="field">
+            <input type="text" placeholder="Organization ID" [(ngModel)]="organizationId" name="organizationId" [class.input-error]="errors['organizationId']" autocomplete="organization"/>
+            <span class="error-msg" *ngIf="errors['organizationId']">{{ errors['organizationId'] }}</span>
+        </div>
+        <button type="submit" [disabled]="isLoading">{{ isLoading ? 'Signing in...' : 'Login' }}</button>
+        
     </form>
 </div>
