@@ -7,6 +7,6 @@ import { createStockMovement, getStockMovements } from './stock.controller.js';
 const router = express.Router();
 
 router.post("/", protect, authorize("admin", "manager"), createStockMovement);
-router.get("/", protect, authorize("admin", "manager"), getStockMovements);
+router.get("/", protect, authorize("admin", "manager", "employee"), getStockMovements);
 
 export default router;
