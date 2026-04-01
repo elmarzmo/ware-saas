@@ -17,6 +17,10 @@
   text-decoration: none;
   margin: 10px 0;
 }
+.sidebar-nav a.active {
+  font-weight: 600;
+  color: #fefefe;
+}
 
 .main {
   flex: 1;

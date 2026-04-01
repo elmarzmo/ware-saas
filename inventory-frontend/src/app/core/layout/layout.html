@@ -2,12 +2,12 @@
     <aside class="sidebar">
         <h2>Inventory Saas</h2>
 
-        <nav>
-            <a routerLink="/dashboard" >Dashboard</a>
-            <a routerLink="/products" >Products</a>
-            <a routerLink="/stock" >Stock</a>
-            <a routerLink="/analytics" >Analytics</a>
-            <a routerLink="/users" >Users</a>
+        <nav class="sidebar-nav">
+            <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+            <a routerLink="/products" routerLinkActive="active">Products</a>
+            <a routerLink="/stock" routerLinkActive="active">Stock</a>
+            <a routerLink="/analytics" routerLinkActive="active">Analytics</a>
+            <a routerLink="/users" routerLinkActive="active">Users</a>
         </nav>
     </aside>
 
