@@ -1,41 +1,131 @@
-<h1>Stock Management</h1>
+<div class="page-wrapper">
+  <h1>Stock Management</h1>
+  <p class="page-meta">inventory · logistics · flow</p>
 
-<div class="form">
+  <!-- Metric Cards -->
+  <div class="metrics">
+    <div class="metric-card blue">
+      <div class="metric-label">Total Products</div>
+      <div class="metric-value">{{ products.length }}</div>
+      <div class="metric-sub">registered items</div>
+    </div>
+    <div class="metric-card green">
+      <div class="metric-label">Stock IN today</div>
+      <div class="metric-value">+{{ todayIn }}</div>
+      <div class="metric-sub">{{ todayInCount }} movements</div>
+    </div>
+    <div class="metric-card red">
+      <div class="metric-label">Stock OUT today</div>
+      <div class="metric-value">−{{ todayOut }}</div>
+      <div class="metric-sub">{{ todayOutCount }} movements</div>
+    </div>
+    <div class="metric-card amber">
+      <div class="metric-label">Total Movements</div>
+      <div class="metric-value">{{ totalMovements }}</div>
+      <div class="metric-sub">page {{ currentPage }} of {{ totalPages }}</div>
+    </div>
+  </div>
 
-  <select [(ngModel)]="newMovement.productId">
-    <option value="">Select Product</option>
-    <option *ngFor="let p of products" [value]="p._id">
-      {{ p.name }}
-    </option>
-  </select>
+  <!-- Form -->
+  <div class="section-label">Register Movement</div>
 
-  <select [(ngModel)]="newMovement.type">
-    <option value="IN">IN</option>
-    <option value="OUT">OUT</option>
-  </select>
+  <div *ngIf="serverError" class="error-banner">{{ serverError }}</div>
+  <div *ngIf="successMessage" class="success-banner">{{ successMessage }}</div>
 
-  <input type="number" [(ngModel)]="newMovement.quantity" min="1">
+  <div class="stock-form">
 
-  <button (click)="addMovement()">Submit</button>
+    <div class="field">
+      <label>Product</label>
+      <select [(ngModel)]="newMovement.productId" name="productId"
+              [class.input-error]="errors['productId']">
+        <option value="" disabled>Select a product</option>
+        <option *ngFor="let p of products" [value]="p._id">{{ p.name }}</option>
+      </select>
+      <span class="error-msg" *ngIf="errors['productId']">{{ errors['productId'] }}</span>
+    </div>
 
+    <div class="field">
+      <label>Movement Type</label>
+      <select [(ngModel)]="newMovement.type" name="type"
+              [class.input-error]="errors['type']">
+        <option value="IN">IN — Restock</option>
+        <option value="OUT">OUT — Sale / Usage</option>
+      </select>
+      <span class="error-msg" *ngIf="errors['type']">{{ errors['type'] }}</span>
+    </div>
+
+    <div class="field full">
+      <label>Quantity</label>
+      <input type="number" [(ngModel)]="newMovement.quantity" name="quantity"
+             min="1" placeholder="0" [class.input-error]="errors['quantity']" />
+      <span class="error-msg" *ngIf="errors['quantity']">{{ errors['quantity'] }}</span>
+    </div>
+
+    <div class="form-actions full">
+      <button class="btn-primary" (click)="addMovement()" [disabled]="isLoading">
+        {{ isLoading ? 'Registering…' : 'Confirm Movement' }}
+      </button>
+      <button class="btn-secondary" (click)="clearForm()" [disabled]="isLoading">
+        Clear
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Table -->
+  <div class="section-label">Movement History</div>
+
+  <div class="table-wrapper">
+    <div class="table-toolbar">
+      <span class="table-toolbar-left">{{ filteredMovements.length }} movements</span>
+      <div class="filter-tabs">
+        <button class="filter-tab" [class.active]="activeFilter === 'ALL'" (click)="setFilter('ALL')">All</button>
+        <button class="filter-tab" [class.active]="activeFilter === 'IN'"  (click)="setFilter('IN')">IN</button>
+        <button class="filter-tab" [class.active]="activeFilter === 'OUT'" (click)="setFilter('OUT')">OUT</button>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Type</th>
+          <th>Qty</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of filteredMovements">
+
+          <td class="product-cell">{{ m.product?.name || m.productId }}</td>
+
+          <td>
+            <span class="status-badge" [ngClass]="m.type === 'IN' ? 'status-in' : 'status-out'">
+              {{ m.type }}
+            </span>
+          </td>
+
+          <td class="mono-text" [ngClass]="m.type === 'IN' ? 'qty-positive' : 'qty-negative'">
+            {{ m.type === 'IN' ? '+' : '−' }}{{ m.quantity }}
+          </td>
+
+          <td class="date-text">{{ m.timestamp | date:'MMM d, h:mm a' }}</td>
+
+        </tr>
+
+        <tr *ngIf="filteredMovements.length === 0">
+          <td colspan="4" class="empty-state">no movements found</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button class="page-btn" (click)="prevPage()" [disabled]="currentPage === 1">← Prev</button>
+      <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
+      <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Next →</button>
+    </div>
+
+  </div>
 </div>
-
-
-
-<h2>Movement History</h2>
-
-<table>
-  <tr>
-    <th>Product</th>
-    <th>Type</th>
-    <th>Quantity</th>
-    <th>Date</th>
-  </tr>
-
-  <tr *ngFor="let m of movements">
-    <td>{{ m.product?.name || m.productId }}</td>
-    <td>{{ m.type }}</td>
-    <td>{{ m.quantity }}</td>
-    <td>{{ m.timestamp | date }}</td>
-  </tr>
-</table>
