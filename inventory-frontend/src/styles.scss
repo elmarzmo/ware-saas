@@ -1,1 +1,150 @@
-/* You can add global styles to this file, and also import other style files */
+/* ── GLOBAL STYLE.SCSS ────────────────────────────────────────────── */
+
+// 1. IMPORT FONTS
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@300;400;600&display=swap');
+
+// 2. DESIGN TOKENS (The DNA of your app)
+:root {
+  --bg:              #0d0f12;         // Deepest background
+  --surface:         #13161b;         // Card/Container background
+  --surface-raised:  #1a1e25;         // Input/Header background
+  --surface-hover:   #1f242d;         // Hover state
+  --border:          #272c36;         // Default border
+  --border-focus:    #4a7cff;         // Accent blue border
+  --accent:          #4a7cff;         // Primary action color
+  --accent-hover:    #3a6aee;         // Darker blue for hover
+  --text-primary:    #e8eaf0;         // High contrast text
+  --text-secondary:  #7a8394;         // Medium contrast text
+  --text-muted:      #454d5e;         // Low contrast text
+  --error:           #ff4d6a;         // Red
+  --success:         #34d399;         // Green
+  --radius:          8px;
+  --transition:      180ms ease;
+}
+
+// 3. BASE RESET
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  height: 100%;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Sora', sans-serif;
+  line-height: 1.5;
+}
+
+/* ── 4. GLOBAL COMPONENT DEFAULTS ───────────────────────────────────── */
+
+// TYPOGRAPHY
+h1, h2, h3 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+// GLOBAL INPUT STYLE (Fixes the "Invisible" boxes)
+input, select, textarea {
+  width: 100%;
+  background: var(--surface-raised) !important; // Forced dark background
+  border: 1px solid var(--border) !important;   // Visible border
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  color: #ffffff !important;                   // Always white text
+  font-family: 'Sora', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+
+  &:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgba(74, 124, 255, 0.15);
+  }
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+// GLOBAL BUTTON STYLE (Fixes the "White Overlap")
+button {
+  background: var(--accent);
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  border: none;
+  font-weight: 600;
+  font-family: 'Sora', sans-serif;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  z-index: 1; 
+
+  &:hover:not(:disabled) {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// GLOBAL TABLE STYLES
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+
+  th {
+    background: var(--surface-raised);
+    color: var(--text-muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+
+  tr:hover td {
+    background: var(--surface-hover);
+  }
+}
+
+/* ── 5. UTILITY CLASSES ────────────────────────────────────────────── */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
