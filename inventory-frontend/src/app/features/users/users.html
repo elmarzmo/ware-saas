@@ -1,20 +1,45 @@
 <h1>User Management</h1>
+<p class="page-meta">manage · assign · control</p>
+
+
+<!-- Server feedback -->
+<div class="error-banner" *ngIf="serverError">{{ serverError }}</div>
+<div class="success-banner" *ngIf="successMessage">{{ successMessage }}</div>
 
 <div class="form">
-  <input placeholder="Name" [(ngModel)]="newUser.name">
-  <input placeholder="Email" [(ngModel)]="newUser.email">
-  <input type="password" placeholder="Password" [(ngModel)]="newUser.password">
 
-  <select [(ngModel)]="newUser.role">
-    <option value="admin">Admin</option>
-    <option value="manager">Manager</option>
-    <option value="employee">Employee</option>
-  </select>
+  <div class="field">
+    <input placeholder="Name" [(ngModel)]="newUser.name" name="name"
+           [class.input-error]="errors['name']" />
+    <span class="error-msg" *ngIf="errors['name']">{{ errors['name'] }}</span>
+  </div>
 
-  <button (click)="createUser()">Add User</button>
+  <div class="field">
+    <input placeholder="Email" [(ngModel)]="newUser.email" name="email"
+           [class.input-error]="errors['email']" />
+    <span class="error-msg" *ngIf="errors['email']">{{ errors['email'] }}</span>
+  </div>
+
+  <div class="field">
+    <input type="password" placeholder="Password" [(ngModel)]="newUser.password" name="password"
+           [class.input-error]="errors['password']" />
+    <span class="error-msg" *ngIf="errors['password']">{{ errors['password'] }}</span>
+  </div>
+
+  <div class="field">
+    <select [(ngModel)]="newUser.role" name="role" [class.input-error]="errors['role']">
+      <option value="admin">Admin</option>
+      <option value="manager">Manager</option>
+      <option value="employee">Employee</option>
+    </select>
+    <span class="error-msg" *ngIf="errors['role']">{{ errors['role'] }}</span>
+  </div>
+
+  <button (click)="createUser()" [disabled]="isLoading">
+    {{ isLoading ? 'Creating…' : 'Add User' }}
+  </button>
+
 </div>
-
-
 
 <table class="user-list">
   <tr>
@@ -22,10 +47,11 @@
     <th>Email</th>
     <th>Role</th>
   </tr>
-
   <tr *ngFor="let u of Users">
     <td>{{ u.name }}</td>
     <td>{{ u.email }}</td>
-    <td>{{ u.role || 'employee' }}</td>
+    <td>
+      <span class="role-badge role-{{ u.role || 'employee' }}">{{ u.role || 'employee' }}</span>
+      </td>
   </tr>
 </table>
