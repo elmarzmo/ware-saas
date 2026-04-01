@@ -17,8 +17,8 @@ return auth.userRole$.pipe(
       return true;
     }
 
-router.navigate(['/dashboard']);
-  return false;
+return router.parseUrl('/dashboard');
+  
   })
 );
 };
