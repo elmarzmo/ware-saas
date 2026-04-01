@@ -1,6 +1,10 @@
 <h1>User Management</h1>
 <p class="page-meta">manage · assign · control</p>
 
+<p class="description">
+Add new users:
+</p>
+
 
 <!-- Server feedback -->
 <div class="error-banner" *ngIf="serverError">{{ serverError }}</div>
@@ -9,6 +13,7 @@
 <div class="form">
 
   <div class="field">
+    
     <input placeholder="Name" [(ngModel)]="newUser.name" name="name"
            [class.input-error]="errors['name']" />
     <span class="error-msg" *ngIf="errors['name']">{{ errors['name'] }}</span>
@@ -39,6 +44,9 @@
     {{ isLoading ? 'Creating…' : 'Add User' }}
   </button>
 
+</div>
+<div *ngIf="Users.length === 0" class="empty-state">
+  No users found. Start by adding a new user above.
 </div>
 
 <table class="user-list">

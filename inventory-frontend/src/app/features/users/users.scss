@@ -169,15 +169,16 @@ button {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
     opacity: 0;
+    z-index: -1;
     transition: opacity var(--transition);
   }
 
   &:hover:not(:disabled) {
     background: var(--accent-hover);
-    box-shadow: 0 4px 20px rgba(74, 124, 255, 0.35);
-    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(74, 124, 255, 0.4);
+    transform: translateY(-2px);
     &::after { opacity: 1; }
   }
 
@@ -294,4 +295,27 @@ table {
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-5px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+.empty-state-container {
+  padding: 3rem;
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  animation: fadeUp 0.4s ease both;
+
+  p {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+
+  span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
 }
