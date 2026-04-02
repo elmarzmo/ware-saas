@@ -1,53 +1,140 @@
-<h1>Products</h1>
-<div class="form" >
-    <input placeholder="Name" [(ngModel)]="newProduct.name" name="name"/>
-    <input placeholder="SKU" [(ngModel)]="newProduct.sku" name="sku"/>
-    <input type="number" placeholder="Quantity" [(ngModel)]="newProduct.quantity" name="quantity"/>
-    <button (click)="createProduct()">Add Product</button>
-</div>
+<div class="page-wrapper">
+  <h1>Products</h1>
+  <p class="page-meta">catalog · sku · inventory</p>
 
-<table>
-    <thead>
+  <!-- Metric Cards -->
+  <div class="metrics">
+    <div class="metric-card blue">
+      <div class="metric-label">Total Products</div>
+      <div class="metric-value">{{ products.length }}</div>
+      <div class="metric-sub">in catalog</div>
+    </div>
+    <div class="metric-card amber">
+      <div class="metric-label">Low Stock</div>
+      <div class="metric-value">{{ lowStockCount }}</div>
+      <div class="metric-sub">below threshold</div>
+    </div>
+    <div class="metric-card green">
+      <div class="metric-label">Total Units</div>
+      <div class="metric-value">{{ totalUnits }}</div>
+      <div class="metric-sub">across all products</div>
+    </div>
+  </div>
+
+  <!-- Create Form -->
+  <div class="section-label">Add Product</div>
+
+  <div *ngIf="serverError" class="error-banner">{{ serverError }}</div>
+  <div *ngIf="successMessage" class="success-banner">{{ successMessage }}</div>
+
+  <div class="product-form">
+    <div class="field">
+      <label>Product Name</label>
+      <input placeholder="e.g. Wireless Keyboard" [(ngModel)]="newProduct.name" name="name"
+             [class.input-error]="errors['name']" />
+      <span class="error-msg" *ngIf="errors['name']">{{ errors['name'] }}</span>
+    </div>
+
+    <div class="field">
+      <label>SKU</label>
+      <input placeholder="e.g. SKU-0012" [(ngModel)]="newProduct.sku" name="sku"
+             [class.input-error]="errors['sku']" />
+      <span class="error-msg" *ngIf="errors['sku']">{{ errors['sku'] }}</span>
+    </div>
+
+    <div class="field">
+      <label>Initial Quantity</label>
+      <input type="number" placeholder="0" [(ngModel)]="newProduct.quantity" name="quantity"
+             min="0" [class.input-error]="errors['quantity']" />
+      <span class="error-msg" *ngIf="errors['quantity']">{{ errors['quantity'] }}</span>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-primary" (click)="createProduct()" [disabled]="isLoading">
+        {{ isLoading ? 'Adding…' : 'Add Product' }}
+      </button>
+      <button class="btn-secondary" (click)="clearForm()" [disabled]="isLoading">Clear</button>
+      <button class="btn-ghost" [class.btn-ghost-active]="isFilteredByLowStock"(click)="getLowStockProducts()">
+        {{ isFilteredByLowStock ? '✕ Clear Filter' : '⚠ Low Stock Only' }}</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="section-label">Product Catalog</div>
+
+  <div class="table-wrapper">
+    <div class="table-toolbar">
+      <span class="table-toolbar-left">{{ products.length }} products</span>
+    </div>
+
+    <table>
+      <thead>
         <tr>
-            <th>Name</th>
-            <th>SKU</th>
-            <th>Quantity</th>
-            <th>Actions</th>
+          <th>Name</th>
+          <th>SKU</th>
+          <th>Quantity</th>
+          <th>Status</th>
+          <th>Actions</th>
         </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
         @for (product of products; track product._id) {
-        <tr>
-            <td>
-                @if (updateProductId === product._id) {
-                    <input [(ngModel)]="product.name" name="updateName"/>
-                } @else {
-                    {{ product.name }}
-                }
+          <tr [class.editing]="updateProductId === product._id">
+
+            <td class="product-cell">
+              @if (updateProductId === product._id) {
+                <input class="inline-input" [(ngModel)]="product.name" name="updateName" />
+              } @else {
+                {{ product.name }}
+              }
             </td>
+
             <td>
-                @if (updateProductId === product._id) {
-                    <input [(ngModel)]="product.sku" name="updateSku"/>
-                } @else {
-                    {{ product.sku }}
-                }
+              @if (updateProductId === product._id) {
+                <input class="inline-input mono-text" [(ngModel)]="product.sku" name="updateSku" />
+              } @else {
+                <span class="mono-text sku-text">{{ product.sku }}</span>
+              }
             </td>
+
             <td>
-                @if (updateProductId === product._id) {
-                    <input type="number" [(ngModel)]="product.quantity" name="updateQuantity"/>
-                } @else {
-                    {{ product.quantity }}
-                }
+              @if (updateProductId === product._id) {
+                <input class="inline-input mono-text qty-input" type="number"
+                       [(ngModel)]="product.quantity" name="updateQuantity" min="0" />
+              } @else {
+                <span class="mono-text" [ngClass]="product.quantity <= 10 ? 'qty-low' : 'qty-ok'">
+                  {{ product.quantity }}
+                </span>
+              }
             </td>
+
             <td>
+              <span class="stock-chip" [ngClass]="product.quantity <= 10 ? 'stock-low' : 'stock-ok'">
+                {{ product.quantity <= 10 ? 'Low' : 'OK' }}
+              </span>
+            </td>
+
+            <td>
+              <div class="action-group">
                 @if (updateProductId === product._id) {
-                    <button (click)="saveUpdate(product)">Save</button>
-                    <button (click)="cancelUpdate()">Cancel</button>
+                  <button class="btn-action btn-save" (click)="saveUpdate(product)">Save</button>
+                  <button class="btn-action btn-cancel" (click)="cancelUpdate()">Cancel</button>
                 } @else {
-                    <button (click)="startUpdate(product)">Edit</button>
-                    <button (click)="deleteProduct(product._id)">Delete</button>
+                  <button class="btn-action btn-edit" (click)="startUpdate(product)">Edit</button>
+                  <button class="btn-action btn-delete" (click)="deleteProduct(product._id)">Delete</button>
                 }
-        </tr>
+              </div>
+            </td>
+
+          </tr>
         }
-    </tbody>
-</table>
+
+        @if (products.length === 0) {
+          <tr>
+            <td colspan="5" class="empty-state">no products found</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

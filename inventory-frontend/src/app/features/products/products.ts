@@ -13,12 +13,19 @@ import { CommonModule } from '@angular/common';
 export class Products implements OnInit {
 
   products: any[] = [];
+  allProducts: any[] = [];
+  isFilteredByLowStock = false;
 
   newProduct = {
     name: '',
     sku: '',
     quantity: 0,
+    
   };
+  errors: Record<string, string> = {};
+  serverError = '';
+  successMessage = '';
+  isLoading = false;
 
   editSnapshot: { name: string; sku: string; quantity: number } | null = null;
   updateProductId: string | null = null;
@@ -31,17 +38,47 @@ export class Products implements OnInit {
 
   loadProducts() {
     this.productService.getProducts().subscribe((res: any) => {
+      this.allProducts = res;
       this.products = res;
+      this.isFilteredByLowStock = false;
     
     });
   }
 
-  createProduct() {
-    this.productService.createProduct(this.newProduct).subscribe(() => {
-      this.newProduct = { name: '', sku: '', quantity: 0 };
+ createProduct() {
+  this.errors = {};
+  this.serverError = '';
+  this.successMessage = '';
+
+  if (!this.newProduct.name?.trim())
+    this.errors['name'] = 'Product name is required.';
+  else if (this.newProduct.name.trim().length < 2)
+    this.errors['name'] = 'Name must be at least 2 characters.';
+
+  if (!this.newProduct.sku?.trim())
+    this.errors['sku'] = 'SKU is required.';
+  else if (!/^[a-zA-Z0-9\-_]{2,30}$/.test(this.newProduct.sku.trim()))
+    this.errors['sku'] = 'SKU must be 2–30 alphanumeric characters (hyphens/underscores allowed).';
+
+  if (this.newProduct.quantity == null || this.newProduct.quantity < 0)
+    this.errors['quantity'] = 'Quantity must be 0 or more.';
+
+  if (Object.keys(this.errors).length > 0 || this.isLoading) return;
+
+  this.isLoading = true;
+  this.productService.createProduct(this.newProduct).subscribe({
+    next: () => {
+      this.clearForm();
       this.loadProducts();
-    });
-  }
+      this.isLoading = false;
+      this.successMessage = 'Product added successfully.';
+    },
+    error: () => {
+      this.isLoading = false;
+      this.serverError = 'Failed to add product. Please try again.';
+    }
+  });
+}
 
     deleteProduct(id: string) {
       if (confirm('Are you sure you want to delete this product?')) {
@@ -52,9 +89,14 @@ export class Products implements OnInit {
     }
 
     getLowStockProducts() {
-      this.productService.getLowStockProducts().subscribe((res: any) => {
-        this.products = res;
-      });
+      if (this.isFilteredByLowStock) {
+    // Toggle back to full list — no extra API call needed
+    this.products = this.allProducts;
+    this.isFilteredByLowStock = false;
+  } else {
+    this.products = this.allProducts.filter(p => p.quantity <= 10);
+    this.isFilteredByLowStock = true;
+  }
     }
 
     
@@ -65,7 +107,15 @@ export class Products implements OnInit {
         console.log(res);
       });
     }
-
+    
+    get lowStockCount(): number{
+      return this.products.filter(p => p.quantity <= 10).length;
+    }
+    
+    get totalUnits(): number {
+      return this.products.reduce((sum, p) => sum + (p.quantity || 0), 0);
+    }
+    
     
 
     startUpdate(product: any) {
@@ -97,11 +147,15 @@ export class Products implements OnInit {
         this.loadProducts();
       });
      
+
      
     }
 
-    
-    
+   clearForm() {
+    this.newProduct = { name: '', sku: '', quantity: 0 };
+    this.errors = {};
+    this.successMessage = '';
+  }
 
 
 
