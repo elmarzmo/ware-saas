@@ -1,26 +1,69 @@
-<h1>Analytics Dashboard</h1>
+<div class="page-wrapper">
+  <h1>Analytics</h1>
+  <p class="page-meta">insights · trends · performance</p>
 
-<div *ngIf="topProductsChart" style="width: 600px; margin-top: 40px;">
-    <h2>Top Moving Products</h2>
+  <!-- Metric Cards -->
+  <div class="metrics">
+    <div class="metric-card blue">
+      <div class="metric-label">Top Product</div>
+      <div class="metric-value truncate">{{ topProductsChart?.data?.labels?.[0] || '—' }}</div>
+      <div class="metric-sub">most units moved</div>
+    </div>
+    <div class="metric-card green">
+      <div class="metric-label">Most Active User</div>
+      <div class="metric-value truncate">{{ activeUsersChart?.data?.labels?.[0] || '—' }}</div>
+      <div class="metric-sub">highest movements</div>
+    </div>
+    <div class="metric-card amber">
+      <div class="metric-label">Peak Month</div>
+      <div class="metric-value truncate">{{ peakMonth }}</div>
+      <div class="metric-sub">highest stock flow</div>
+    </div>
+  </div>
+
+  <!-- Top Moving Products -->
+  <div class="section-label">Top Moving Products</div>
+  <div class="chart-card" *ngIf="topProductsChart">
     <canvas baseChart
             [data]="topProductsChart.data"
-            chartType="bar">
+            [options]="barOptions"
+            [type]="topProductsChart.type">
     </canvas>
+  </div>
+  <div class="chart-skeleton" *ngIf="!topProductsChart">
+    <div class="skeleton-bars">
+      <div class="skeleton-bar" style="height: 60%"></div>
+      <div class="skeleton-bar" style="height: 85%"></div>
+      <div class="skeleton-bar" style="height: 45%"></div>
+      <div class="skeleton-bar" style="height: 70%"></div>
+      <div class="skeleton-bar" style="height: 55%"></div>
+    </div>
+  </div>
 
-</div>
-
-<div *ngIf="activeUsersChart" style="width: 600px; margin-top: 40px;">
-    <h2>Most Active Users</h2>
+  <!-- Most Active Users -->
+  <div class="section-label" style="margin-top: 2rem;">Most Active Users</div>
+  <div class="chart-card" *ngIf="activeUsersChart">
     <canvas baseChart
             [data]="activeUsersChart.data"
-            chartType="bar">
+            [options]="lineOptions"
+            [type]="activeUsersChart.type">
     </canvas>
-</div>
+  </div>
+  <div class="chart-skeleton" *ngIf="!activeUsersChart">
+    <div class="skeleton-line"></div>
+  </div>
 
-<div *ngIf="stockTrendsChart" style="width: 600px; margin-top: 40px;">
-    <h2>Stock Trends</h2>
+  <!-- Stock Trends -->
+  <div class="section-label" style="margin-top: 2rem;">Stock Trends</div>
+  <div class="chart-card" *ngIf="stockTrendsChart">
     <canvas baseChart
             [data]="stockTrendsChart.data"
-            chartType="line">
+            [options]="lineOptions"
+            [type]="stockTrendsChart.type">
     </canvas>
+  </div>
+  <div class="chart-skeleton" *ngIf="!stockTrendsChart">
+    <div class="skeleton-line"></div>
+  </div>
+
 </div>
