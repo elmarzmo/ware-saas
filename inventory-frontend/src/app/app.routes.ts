@@ -11,6 +11,7 @@ import { Users } from './features/users/users';
 import { roleGuard } from './core/guards/role-guard';
 
 export const routes: Routes = [
+    { path : '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: Login },
     { path: '', component: Layout, canActivate: [authGuard], children: [
         { path: 'dashboard', component: Dashboard },
@@ -21,5 +22,5 @@ export const routes: Routes = [
         { path: 'users', component: Users, canActivate: [roleGuard], data: { role: ['admin', 'manager'] } },
 
     ]},
-    { path : '', redirectTo: 'login', pathMatch: 'full' },
+    
 ];
