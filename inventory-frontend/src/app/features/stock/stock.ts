@@ -91,20 +91,20 @@ export class Stock implements OnInit {
 }
   get todayIn(): number {
   return this.movements
-    .filter(m => m.type === 'IN' && this.isToday(m.timestamp))
+    .filter(m => m.type === 'IN' && this.isToday(m.createdAt ?? m.timestamp))
     .reduce((sum, m) => sum + m.quantity, 0);
 }
 
   get todayOut(): number {
   return this.movements
-    .filter(m => m.type === 'OUT' && this.isToday(m.timestamp))
+    .filter(m => m.type === 'OUT' && this.isToday(m.createdAt ?? m.timestamp))
     .reduce((sum, m) => sum + m.quantity, 0);
 }
   get todayInCount(): number {
-  return this.movements.filter(m => m.type === 'IN' && this.isToday(m.timestamp)).length;
+  return this.movements.filter(m => m.type === 'IN' && this.isToday(m.createdAt ?? m.timestamp)).length;
 }
   get todayOutCount(): number {
-  return this.movements.filter(m => m.type === 'OUT' && this.isToday(m.timestamp)).length;
+  return this.movements.filter(m => m.type === 'OUT' && this.isToday(m.createdAt ?? m.timestamp)).length;
 }
   get filteredMovements() {
   if (this.activeFilter === 'ALL') return this.movements;
@@ -133,7 +133,10 @@ nextPage() {
   }
 }
 
-private isToday(timestamp: string): boolean {
-  return new Date(timestamp).toDateString() === new Date().toDateString();
+private isToday(timestamp?: string | null): boolean {
+  if (!timestamp) return false;
+  const parsed = new Date(timestamp);
+  if (Number.isNaN(parsed.getTime())) return false;
+  return parsed.toDateString() === new Date().toDateString();
 }
 }

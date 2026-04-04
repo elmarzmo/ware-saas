@@ -109,7 +109,7 @@
             {{ m.type === 'IN' ? '+' : '−' }}{{ m.quantity }}
           </td>
 
-          <td class="date-text">{{ m.timestamp | date:'MMM d, h:mm a' }}</td>
+          <td class="date-text">{{ (m.createdAt || m.timestamp) | date:'MMM d, h:mm a' }}</td>
 
         </tr>
 
