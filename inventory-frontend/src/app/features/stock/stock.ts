@@ -18,6 +18,7 @@ export class Stock implements OnInit {
   totalMovements = 0;
   currentPage = 1;
   totalPages = 0;
+  pageSize = 10;
 
 
   activeFilter: 'ALL' | 'IN' | 'OUT' = 'ALL';
@@ -25,6 +26,11 @@ export class Stock implements OnInit {
   serverError = '';
   successMessage = '';
   isLoading = false;
+
+  todayIn = 0;
+  todayOut = 0;
+  todayInCount = 0;
+  todayOutCount = 0;
 
   newMovement = {
     productId: '',
@@ -51,12 +57,19 @@ export class Stock implements OnInit {
   }
 
   loadMovements() {
-    this.stockService.getMovements().subscribe((res: any) => {
+    this.stockService.getMovements({
+      page: this.currentPage,
+      limit: this.pageSize,
+    }).subscribe((res: any) => {
       
       this.movements = res.data;
       this.totalMovements = res.total;
       this.currentPage = res.page;
       this.totalPages = res.pages;
+      this.todayIn = res.todayStats?.in?.quantity ?? 0;
+      this.todayOut = res.todayStats?.out?.quantity ?? 0;
+      this.todayInCount = res.todayStats?.in?.count ?? 0;
+      this.todayOutCount = res.todayStats?.out?.count ?? 0;
     });
   }
 
@@ -89,23 +102,6 @@ export class Stock implements OnInit {
     }
   });
 }
-  get todayIn(): number {
-  return this.movements
-    .filter(m => m.type === 'IN' && this.isToday(m.createdAt ?? m.timestamp))
-    .reduce((sum, m) => sum + m.quantity, 0);
-}
-
-  get todayOut(): number {
-  return this.movements
-    .filter(m => m.type === 'OUT' && this.isToday(m.createdAt ?? m.timestamp))
-    .reduce((sum, m) => sum + m.quantity, 0);
-}
-  get todayInCount(): number {
-  return this.movements.filter(m => m.type === 'IN' && this.isToday(m.createdAt ?? m.timestamp)).length;
-}
-  get todayOutCount(): number {
-  return this.movements.filter(m => m.type === 'OUT' && this.isToday(m.createdAt ?? m.timestamp)).length;
-}
   get filteredMovements() {
   if (this.activeFilter === 'ALL') return this.movements;
   return this.movements.filter(m => m.type === this.activeFilter);
@@ -133,10 +129,4 @@ nextPage() {
   }
 }
 
-private isToday(timestamp?: string | null): boolean {
-  if (!timestamp) return false;
-  const parsed = new Date(timestamp);
-  if (Number.isNaN(parsed.getTime())) return false;
-  return parsed.toDateString() === new Date().toDateString();
-}
 }

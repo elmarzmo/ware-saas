@@ -35,20 +35,55 @@ export const getStockMovements = async (req, res) => {
 
         const pageNumber = Number(page);
         const limitNumber = Number(limit);
+        const effectiveLimit = limitNumber > 0 ? limitNumber : 1;
+        const effectivePage = pageNumber > 0 ? pageNumber : 1;
         const movements = await StockMovement.find(query)
             .populate("product", "name")
             .populate("perFormedBy", "name")
             .sort({ createdAt: -1 })
-            .skip((pageNumber - 1) * limitNumber)
-            .limit(limitNumber);
+            .skip((effectivePage - 1) * effectiveLimit)
+            .limit(effectiveLimit);
         const total = await StockMovement.countDocuments(query);
 
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
+        const todayStatsAgg = await StockMovement.aggregate([
+            {
+                $match: {
+                    ...query,
+                    createdAt: { $gte: startOfDay, $lte: endOfDay },
+                },
+            },
+            {
+                $group: {
+                    _id: "$type",
+                    totalQuantity: { $sum: "$quantity" },
+                    movementCount: { $sum: 1 },
+                },
+            },
+        ]);
+        const todayStats = {
+            in: { quantity: 0, count: 0 },
+            out: { quantity: 0, count: 0 },
+        };
+        todayStatsAgg.forEach(stat => {
+            if (stat._id === "IN") {
+                todayStats.in.quantity = stat.totalQuantity;
+                todayStats.in.count = stat.movementCount;
+            } else if (stat._id === "OUT") {
+                todayStats.out.quantity = stat.totalQuantity;
+                todayStats.out.count = stat.movementCount;
+            }
+        });
+
         res.json({
-            
             total,
-            page: Number(page),
-            pages: Math.ceil(total / limit),
+            page: effectivePage,
+            pages: Math.ceil(total / effectiveLimit),
             data: movements,
+            todayStats,
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
