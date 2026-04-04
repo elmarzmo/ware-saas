@@ -97,7 +97,9 @@
       <tbody>
         <tr *ngFor="let m of filteredMovements">
 
-          <td class="product-cell">{{ m.product?.name || m.productId }}</td>
+          <td class="product-cell">
+            {{ m.product?.name || m.product?._id || m.product || m.productId || '—' }}
+          </td>
 
           <td>
             <span class="status-badge" [ngClass]="m.type === 'IN' ? 'status-in' : 'status-out'">
