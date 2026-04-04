@@ -54,12 +54,40 @@ Add new users:
     <th>Name</th>
     <th>Email</th>
     <th>Role</th>
+    <th>Actions</th>
   </tr>
   <tr *ngFor="let u of Users">
     <td>{{ u.name }}</td>
     <td>{{ u.email }}</td>
     <td>
       <span class="role-badge role-{{ u.role || 'employee' }}">{{ u.role || 'employee' }}</span>
-      </td>
+    </td>
+  <td class="actions-cell">
+    <div class="action-row">
+      <ng-container *ngIf="!u.showRoleEditor">
+        <button class="btn-secondary" (click)="startRoleEdit(u)" [disabled]="isLoading">
+          Update status
+        </button>
+      </ng-container>
+      <div *ngIf="u.showRoleEditor" class="role-editor">
+        <select [(ngModel)]="u.editedRole">
+          <option *ngFor="let role of allowedRoles" [value]="role">{{ role }}</option>
+        </select>
+        <button class="btn-primary" (click)="changeUserRole(u)" [disabled]="isLoading">
+          Save
+        </button>
+        <button class="btn-tertiary" (click)="cancelRoleEdit(u)" [disabled]="isLoading">
+          Cancel
+        </button>
+      </div>
+      <button class="btn-secondary" (click)="deleteUser(u._id)" [disabled]="isLoading">
+        Delete
+      </button>
+    </div>
+  </td>
+
+  
+   
+   
   </tr>
 </table>

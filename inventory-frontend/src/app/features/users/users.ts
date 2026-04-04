@@ -13,6 +13,7 @@ import { ValidationService } from '../../core/services/validation.service';
 export class Users implements OnInit {
 
   Users: any[] = [];
+  allowedRoles = ['employee', 'manager', 'admin'];
 
   newUser: any = {
     name: '',
@@ -35,7 +36,13 @@ export class Users implements OnInit {
 
   loadUsers() {
     this.userService.getUsers().subscribe({
-      next: (Users) => this.Users = Users as any[],
+      next: (Users) => {
+        this.Users = (Users as any[]).map(u => ({
+          ...u,
+          editedRole: u.role || 'employee',
+          showRoleEditor: false,
+        }));
+      },
       error: () => this.serverError = 'Failed to load users, please try again later.'  
       
     });
@@ -78,10 +85,40 @@ export class Users implements OnInit {
     });
   }
 
-  updateUser(user: any) {
-    this.userService.updateUser(user._id, user).subscribe({
-      next: () => this.loadUsers(),
-      error: () => this.serverError = 'Failed to update user.'
+  startRoleEdit(user: any) {
+    user.editedRole = user.role || 'employee';
+    user.showRoleEditor = true;
+    this.serverError = '';
+    this.successMessage = '';
+  }
+
+  cancelRoleEdit(user: any) {
+    user.editedRole = user.role || 'employee';
+    user.showRoleEditor = false;
+  }
+
+  changeUserRole(user: any) {
+    const desiredRole = user.editedRole || 'employee';
+    if (desiredRole === user.role) {
+      this.successMessage = `User already assigned the ${desiredRole} role.`;
+      user.showRoleEditor = false;
+      return;
+    }
+
+    this.isLoading = true;
+    this.serverError = '';
+    this.successMessage = '';
+
+    this.userService.updateUser(user._id, { role: desiredRole }).subscribe({
+      next: () => {
+        this.loadUsers();
+        this.isLoading = false;
+        this.successMessage = `Role updated to ${desiredRole}.`;
+      },
+      error: () => {
+        this.isLoading = false;
+        this.serverError = 'Failed to update user role.';
+      }
     });
   }
 
