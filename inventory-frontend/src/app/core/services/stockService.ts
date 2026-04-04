@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Auth } from './auth';
 
 @Injectable({
@@ -18,8 +18,21 @@ export class StockService {
     return this.http.post(`${this.api}/stock`, data, { headers: this.auth.getAuthHeaders() });
   }
   
-  getMovements() {
-    return this.http.get(`${this.api}/stock`, { headers: this.auth.getAuthHeaders() });
+  getMovements(options: { page?: number; limit?: number; productId?: string } = {}) {
+    let params = new HttpParams();
+    if (options.page !== undefined) {
+      params = params.set('page', options.page.toString());
+    }
+    if (options.limit !== undefined) {
+      params = params.set('limit', options.limit.toString());
+    }
+    if (options.productId) {
+      params = params.set('productId', options.productId);
+    }
+    return this.http.get(`${this.api}/stock`, {
+      headers: this.auth.getAuthHeaders(),
+      params,
+    });
   }
   
 
