@@ -168,3 +168,73 @@ button {
   gap: 8px;
   &::before { content: 'âš—'; transform: rotate(45deg); }
 }
+.demo-credentials {
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid #272c36;       // matches --border
+  border-radius: 8px;               // matches --radius
+  background: #1a1e25;              // matches --surface-raised
+
+  .demo-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .demo-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #1D9E75;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .demo-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7a8394;                  // matches --text-secondary
+  }
+
+  .demo-desc {
+    font-size: 0.75rem;
+    font-family: 'IBM Plex Mono', monospace;
+    color: #454d5e;                  // matches --text-muted
+    margin: 0 0 12px;
+  }
+
+  .demo-fields {
+    border-top: 1px solid #272c36;  // matches --border
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .demo-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+      font-size: 0.75rem;
+      font-family: 'IBM Plex Mono', monospace;
+      color: #7a8394;               // matches --text-secondary
+    }
+
+    code {
+      background: #13161b;          // matches --surface
+      border: 1px solid #272c36;   // matches --border
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-family: 'IBM Plex Mono', monospace;
+      color: #4a7cff;               // matches --accent, makes it pop
+      word-break: break-all;
+    }
+  }
+}
