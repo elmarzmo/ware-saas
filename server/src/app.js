@@ -6,7 +6,6 @@ import morgan from 'morgan';
 import { notFound} from './middleware/notFound.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
-import { register } from './modules/auth/autho.controller.js';
 import { login } from './modules/auth/autho.controller.js';
 
 import testRoutes from './modules/test/test.routes.js';
@@ -26,11 +25,11 @@ const app = express();
 
 // Middleware
 app.use(helmet());
-
+/*
 app.use(cors({ origin: "'https://d3tgxl8tbyiz3f.cloudfront.net'", 
     credentials: true
-}));
-//app.use(cors({}));
+}));*/
+app.use(cors({}));
 app.use(express.json());
 app.use(morgan("dev"));
 
