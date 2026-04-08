@@ -64,6 +64,15 @@ export class ValidationService {
     return '';
   }
 
+
+  validateOrganizationName(name: string): string {
+    const clean = this.sanitizeText(name);
+    if (!clean) return 'Organization name is required.';
+    if (clean.length < 3) return 'Organization name must be at least 3 characters.';
+    if (clean.length > 50) return 'Organization name must be 50 characters or fewer.';
+    return '';
+  }
+
   validateRole(role: string): string {
     if (!this.isValidRole(role)) return 'Role must be admin, manager, or employee.';
     return '';
@@ -86,6 +95,24 @@ export class ValidationService {
     return { valid: Object.keys(errors).length === 0, errors };
   }
 
+  validateRegistrationForm(organizationName: string, adminName: string, adminEmail: string, adminPassword: string): ValidationResult {
+    const errors: Record<string, string> = {};
+
+    const orgErr = this.validateOrganizationName(organizationName);
+    if (orgErr) errors['orgName'] = orgErr;
+
+    const nameErr = this.validateName(adminName);
+    if (nameErr) errors['adminName'] = nameErr;
+
+    const emailErr = this.validateEmail(adminEmail);
+    if (emailErr) errors['adminEmail'] = emailErr;
+
+    const passErr = this.validatePassword(adminPassword);
+    if (passErr) errors['adminPassword'] = passErr;
+
+    return { valid: Object.keys(errors).length === 0, errors };
+  }
+
   validateNewUserForm(name: string, email: string, password: string, role: string): ValidationResult {
     const errors: Record<string, string> = {};
 
@@ -104,3 +131,4 @@ export class ValidationService {
     return { valid: Object.keys(errors).length === 0, errors };
   }
 }
+
