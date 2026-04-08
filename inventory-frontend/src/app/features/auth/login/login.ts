@@ -13,15 +13,24 @@ import { ValidationService } from '../../../core/services/validation.service';
 })
 export class Login {
 
+  // Login fields
   email = '';
   password = '';
   organizationId = '';
-
-  errors:Record<string, string> ={};
-  serverError ='';
+  errors: Record<string, string> = {};
+  serverError = '';
   isLoading = false;
+  successMessage = '';
 
-
+  // Register fields
+  orgName = '';         // ← was missing
+  adminName = '';
+  adminEmail = '';      // ← was missing
+  adminPassword = '';
+  registerErrors: Record<string, string> = {};
+  registerServerError = '';
+  registerSuccessMessage = '';
+  registerLoading = false;
 
   constructor(
     private auth: Auth,
@@ -30,27 +39,56 @@ export class Login {
   ) { }
 
   onLogin() {
-     this.serverError = '';
+    this.serverError = '';
 
-  const { valid, errors } = this.validation.validateLoginForm(
-    this.email, this.password, this.organizationId
-  );
+    const { valid, errors } = this.validation.validateLoginForm(
+      this.email, this.password, this.organizationId
+    );
+    this.errors = errors;
+    if (!valid || this.isLoading) return;
 
-  this.errors = errors;
-  if (!valid || this.isLoading) return;
+    this.isLoading = true;
 
-  this.isLoading = true;
+    this.auth.login({
+      email:          this.validation.sanitizeEmail(this.email),
+      password:       this.password,
+      organizationId: this.validation.sanitizeText(this.organizationId)
+    }).subscribe({
+      next: () => this.router.navigate(['/dashboard']),
+      error: () => {
+        this.isLoading = false;
+        this.serverError = 'Invalid credentials or organization. Please try again.';
+      }
+    });
+  }
 
-  this.auth.login({
-    email:          this.validation.sanitizeEmail(this.email),
-    password:       this.password,
-    organizationId: this.validation.sanitizeText(this.organizationId)
-  }).subscribe({
-    next: () => this.router.navigate(['/dashboard']),
-    error: () => {
-      this.isLoading = false;
-      this.serverError = 'Invalid credentials or organization. Please try again.';
-    }
-  });
-}
+  onRegister() {   // ← renamed from register() to match template
+    this.registerServerError = '';
+    this.registerSuccessMessage = '';
+
+    const { valid, errors } = this.validation.validateRegistrationForm(
+
+       this.orgName,this.adminName, this.adminEmail, this.adminPassword
+    );
+    this.registerErrors = errors;   // ← was writing to this.errors by mistake
+    if (!valid || this.registerLoading) return;
+
+    this.registerLoading = true;
+
+    this.auth.createOrganization({
+      organizationName:    this.validation.sanitizeText(this.orgName),
+      name:  this.validation.sanitizeText(this.adminName),
+      email:      this.validation.sanitizeEmail(this.adminEmail),
+      password:   this.adminPassword,
+    }).subscribe({
+      next: (res: any) => {
+        this.registerLoading = false;
+        this.registerSuccessMessage = `Organization created! Your Organization ID is: ${ res.organization } - Save this Organization ID for future login.`;
+      },
+      error: () => {
+        this.registerLoading = false;
+        this.registerServerError = 'Registration failed. Please try again.';
+      }
+    });
+  }
 }

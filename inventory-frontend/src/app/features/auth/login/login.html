@@ -1,25 +1,62 @@
-<div class=" login-container">
-    <h2> Inventory Saas Login</h2>
-   
+<div class="login-container">
+  <h2>Inventory SaaS Login</h2>
 
+  <!-- LOGIN FORM -->
+  <div *ngIf="serverError" class="error-banner">{{ serverError }}</div>
+  <div *ngIf="successMessage" class="success-banner">{{ successMessage }}</div>
 
-    <div *ngIf="serverError" class="error-banner">{{ serverError }}</div>
+  <form (ngSubmit)="onLogin()" novalidate>
+    <div class="field">
+      <input type="email" placeholder="Email" [(ngModel)]="email" name="email"
+             [class.input-error]="errors['email']" autocomplete="email"/>
+      <span class="error-msg" *ngIf="errors['email']">{{ errors['email'] }}</span>
+    </div>
+    <div class="field">
+      <input type="password" placeholder="Password" [(ngModel)]="password" name="password"
+             [class.input-error]="errors['password']" autocomplete="current-password"/>
+      <span class="error-msg" *ngIf="errors['password']">{{ errors['password'] }}</span>
+    </div>
+    <div class="field">
+      <input type="text" placeholder="Organization ID" [(ngModel)]="organizationId" name="organizationId"
+             [class.input-error]="errors['organizationId']" autocomplete="organization"/>
+      <span class="error-msg" *ngIf="errors['organizationId']">{{ errors['organizationId'] }}</span>
+    </div>
+    <button type="submit" [disabled]="isLoading">{{ isLoading ? 'Signing in...' : 'Login' }}</button>
+  </form>
 
-    <form (ngSubmit)="onLogin()" novalidate>
+  <div class="register">
+    <div class="auth-card">
+      <h3>Don't have an account?</h3>
+      <h3>Register Your Organization</h3>
+
+      <div *ngIf="registerServerError" class="error-banner">{{ registerServerError }}</div>
+      <div *ngIf="registerSuccessMessage" class="success-banner">{{ registerSuccessMessage }}</div>
+
+      <form (ngSubmit)="onRegister()" novalidate>
         <div class="field">
-
-            <input type="email" placeholder="Email" [(ngModel)]="email" name="email" [class.input-error]="errors['email']" autocomplete="email"/>
-            <span class="error-msg" *ngIf="errors['email']">{{ errors['email'] }}</span>
+          <input type="text" placeholder="Organization Name" [(ngModel)]="orgName" name="orgName"
+                 [class.input-error]="registerErrors['orgName']"/>
+          <span class="error-msg" *ngIf="registerErrors['orgName']">{{ registerErrors['orgName'] }}</span>
         </div>
         <div class="field">
-            <input type="password" placeholder="Password" [(ngModel)]="password" name="password" [class.input-error]="errors['password']" autocomplete="current-password"/>
-            <span class="error-msg" *ngIf="errors['password']">{{ errors['password'] }}</span>
+          <input type="text" placeholder="Admin Name" [(ngModel)]="adminName" name="adminName"
+                 [class.input-error]="registerErrors['adminName']" autocomplete="name"/>
+          <span class="error-msg" *ngIf="registerErrors['adminName']">{{ registerErrors['adminName'] }}</span>
         </div>
         <div class="field">
-            <input type="text" placeholder="Organization ID" [(ngModel)]="organizationId" name="organizationId" [class.input-error]="errors['organizationId']" autocomplete="organization"/>
-            <span class="error-msg" *ngIf="errors['organizationId']">{{ errors['organizationId'] }}</span>
+          <input type="email" placeholder="Admin Email" [(ngModel)]="adminEmail" name="adminEmail"
+                 [class.input-error]="registerErrors['adminEmail']" autocomplete="email"/>
+          <span class="error-msg" *ngIf="registerErrors['adminEmail']">{{ registerErrors['adminEmail'] }}</span>
         </div>
-        <button type="submit" [disabled]="isLoading">{{ isLoading ? 'Signing in...' : 'Login' }}</button>
-        
-    </form>
+        <div class="field">
+          <input type="password" placeholder="Admin Password" [(ngModel)]="adminPassword" name="adminPassword"
+                 [class.input-error]="registerErrors['adminPassword']" autocomplete="new-password"/>
+          <span class="error-msg" *ngIf="registerErrors['adminPassword']">{{ registerErrors['adminPassword'] }}</span>
+        </div>
+        <button type="submit" [disabled]="registerLoading">
+          {{ registerLoading ? 'Registering...' : 'Create organization' }}
+        </button>
+      </form>
+    </div>
+  </div>
 </div>
