@@ -47,4 +47,8 @@ export class Auth {
     localStorage.removeItem('role');
     this.userRoleSubject.next(null);
   }
+
+  createOrganization(data: any) {
+    return this.http.post(`${this.api}/organizations`, data);
+  }
 }
