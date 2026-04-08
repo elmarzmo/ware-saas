@@ -51,7 +51,7 @@
       <h3>Register Your Organization</h3>
 
       <div *ngIf="registerServerError" class="error-banner">{{ registerServerError }}</div>
-      <div *ngIf="registerSuccessMessage" class="success-banner">{{ registerSuccessMessage }}</div>
+      <div *ngIf="registerSuccessMessage" class="success-banner" [innerHTML]="registerSuccessMessage"></div>
 
       <form (ngSubmit)="onRegister()" novalidate>
         <div class="field">

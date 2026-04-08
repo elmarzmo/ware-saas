@@ -83,7 +83,7 @@ export class Login {
     }).subscribe({
       next: (res: any) => {
         this.registerLoading = false;
-        this.registerSuccessMessage = `Organization created! Your Organization ID is: ${ res.organization } - Save this Organization ID for future login.`;
+        this.registerSuccessMessage = `Organization created! <br> Your Organization ID is:<br> <strong>${res.organization}</strong> <br> Save this Organization ID for future login.`;
       },
       error: () => {
         this.registerLoading = false;

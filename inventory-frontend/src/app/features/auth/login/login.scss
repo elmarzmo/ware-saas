@@ -163,10 +163,14 @@ button {
   margin-bottom: 1.5rem;
   font-size: 0.8rem;
   font-family: 'IBM Plex Mono', monospace;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  &::before { content: 'âš—'; transform: rotate(45deg); }
+  display: block;        // ← was flex
+  line-height: 1.6;      // ← gives the text room to wrap cleanly
+  word-break: normal; 
+
+  strong {
+    color: #7ef3c4;
+    font-weight: 600;
+  }
 }
 .demo-credentials {
   margin-top: 2rem;
