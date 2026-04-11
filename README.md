@@ -13,18 +13,29 @@ This application allows organizations to manage products, track stock movements,
 
 ## 📸 Screenshots
 
-### Dashboard
-![LogIn page]
+### LogIn
+![]
 <img width="1598" height="1228" alt="image" src="https://github.com/user-attachments/assets/8a87f3c2-fce2-4fb6-a7ce-7e2efd21699a" />
 
 ### Products
-![Products](./screenshots/products.png)
+
+<img width="1658" height="1277" alt="image" src="https://github.com/user-attachments/assets/431c4806-0f90-4e5c-a03e-3c3642ed4848" />
+
 
 ### Stock Management
-![Stock](./screenshots/stock.png)
+![Stock]
+<img width="1681" height="1301" alt="image" src="https://github.com/user-attachments/assets/23ee0c27-c54a-4960-af4d-690dfe381d19" />
+
 
 ### Analytics
-![Analytics](./screenshots/analytics.png)
+![Analytics]
+<img width="1704" height="1257" alt="image" src="https://github.com/user-attachments/assets/3de55e00-3638-4ef6-be84-3fa49aa330c4" />
+
+
+### Users
+<img width="1680" height="982" alt="image" src="https://github.com/user-attachments/assets/7497a4b9-7912-4f70-a19b-8a3823fad351" />
+
+
 
 ---
 
