@@ -1,4 +1,4 @@
-# 🏭 Inventory Management SaaS
+#  Inventory Management SaaS
 
 A full-stack, multi-tenant inventory management system built with Angular, Node.js, MongoDB, and AWS.  
 This application allows organizations to manage products, track stock movements, monitor analytics, and control user access with role-based permissions.
